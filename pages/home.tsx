@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -7,31 +7,37 @@ import { ButtonLink, ButtonsContainer, CardImage, CardText, Container, FixtureCa
 import { Layout } from '../components/Layout';
 import { AuthContext } from '../context/authContext';
 import Link from 'next/link';
-
+import { firstLetterToCapitalize } from '../helpers';
 
 
 const HomePage: NextPage = () => {
 
-    const { isAuthenticated, logOut } = useContext(AuthContext);
+    const { isAuthenticated, user, setUserData} = useContext(AuthContext);
     const { push } = useRouter();
-
+    
     useEffect(() => {
         if (!isAuthenticated) {
             push('/');
         }
+        setUserData();
     }, [isAuthenticated]);
 
+    if(!user){
+        return <></>
+    }
     return (
         <Layout>
             <HeaderHello>
-                <HelloText>Hola, <span>Fabricio Salgueiro</span></HelloText>
-                <Avatar w={60} h={60}>
-                    <Image src={require('../assets/user.png')} />
+                <HelloText>Hola, <span>{firstLetterToCapitalize(user.name)}</span></HelloText>
+                <Avatar w={60} h={60} onClick={() => push('/crear')}>
+                    <Image width={'60px'} height={'60px'} 
+                    style={{borderRadius: '100%'}}
+                    src={ (user.photoURL !== '') ? user.photoURL : require('../assets/user.png')} />
                 </Avatar>
             </HeaderHello>
             <br />
             <Container>
-                <Link href={'fixture/emanul-cisterna'}>
+                <Link href={`fixture/${user.uid}`}>
                     <FixtureCard>
                         <CardImage>
                             <Image src={require('../assets/growth.png')} />
@@ -41,7 +47,7 @@ const HomePage: NextPage = () => {
                         </Coin>
                         <CardText>
                             <h2>Tu Fixture</h2>
-                            <h3>Puntos: 35600</h3>
+                            <h3>Puntos: {user.score.total}</h3>
                         </CardText>
                     </FixtureCard>
                 </Link>

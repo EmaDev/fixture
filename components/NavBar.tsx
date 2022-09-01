@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { HiMenu } from 'react-icons/hi';
+import { HiMenu,HiUser } from 'react-icons/hi';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 const NavBarHeader = styled.header`
    position: fixed;
@@ -8,21 +10,29 @@ const NavBarHeader = styled.header`
    z-index: 998;
    width: 100%;
    background-color: #e1e1e1;
-   height: 50px;
+   height: 60px;
    padding: 1rem;
    top: 0;
    left: 0;
    display: flex;
 `;
 
-const HamburgerButton = styled.button`
+const ActionButton = styled.button<any>`
    border-style:none;
    background: none;
    position: absolute;
    top: 0; bottom: 0;
-   right: 1rem;
    margin:0;
    font-size: 3rem;
+   ${({pos}) => `${pos};`}
+`;
+
+const LogoButton = styled.div`
+   width: 85px;
+   height:38px;
+   position:absolute;
+   left: 0; right: 0;top:0; bottom: 0;
+   margin:auto;
 `;
 
 interface Props {
@@ -30,6 +40,7 @@ interface Props {
 }
 export const NavBar = ({ menuRef }: Props) => {
 
+    const {push} = useRouter();
     const handleOpenMenu = () => {
 
         menuRef.current.classList.remove('ocultarMenu');
@@ -37,9 +48,15 @@ export const NavBar = ({ menuRef }: Props) => {
     return (
         <NavBarHeader>
             <h3>Fixture</h3>
-            <HamburgerButton>
+            <ActionButton pos={'left: 1rem'}>
                 <HiMenu onClick={handleOpenMenu} />
-            </HamburgerButton>
+            </ActionButton>
+            <LogoButton>
+                <Image src={require('../assets/icon-nav.svg')}/>
+            </LogoButton>
+            <ActionButton pos={'right: 1rem'}>
+                <HiUser  onClick={() => push('/login')}/>
+            </ActionButton>
         </NavBarHeader>
     )
 }

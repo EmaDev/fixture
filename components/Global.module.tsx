@@ -43,6 +43,10 @@ export const Avatar = styled.div<any>`
    top: 0;bottom:0;
    right: 1rem;
    margin:auto;
+   img{
+      width: 100%;
+      border-radius: 100%;
+   }
 `;
 
 export const Coin = styled.div<any>`
