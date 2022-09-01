@@ -9,10 +9,11 @@ import { AlternativeSigIn, Button, Form, Input, QuestionLink, Title } from '../c
 import googleIcon from '../assets/google.png';
 import { useForm } from '../hooks/useForm';
 import { createAnUserWithEmailAndPassword, signInWithGoogleAccount } from '../firebase/authQueries';
+import { setUserId } from 'firebase/analytics';
 
 const SignUpPage: NextPage = () => {
 
-  const { isAuthenticated, logIn } = useContext(AuthContext);
+  const { isAuthenticated, logIn, setUserData } = useContext(AuthContext);
   const { push } = useRouter();
 
   const { formValues, handleInputChange } = useForm({ name: '', email: '', pass: '', pass2: '' });
@@ -46,7 +47,6 @@ const SignUpPage: NextPage = () => {
         text: resp.msg
       })
     }
-
     logIn(resp.uid);
   }
 

@@ -6,7 +6,7 @@ interface AuthContextProps {
   user: UserData | null;
   logIn: (uid: string) => void;
   logOut: () => void;
-  setUserData: () => void;
+  setUserData: (uid?:string) => void;
 }
 
 export interface UserData {
@@ -56,10 +56,10 @@ export const AuthContextProvider = ({ children }: any) => {
     });
   }
 
-  const setUserData = async () => {
+  const setUserData = async (uid?:string) => {
     if (!user) return;
 
-    const resp = await getUserData(user.uid);
+    const resp = await getUserData(uid ? uid : user.uid);
     if (resp.ok) {
       setUser({
         ...user,

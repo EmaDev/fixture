@@ -1,13 +1,12 @@
 import type { NextPage } from 'next';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useContext, useEffect } from 'react';
+import { AboutQatar } from '../components/home/AboutQatar';
 import { Counter } from '../components/home/Counter';
 import { Header } from '../components/home/Header';
 import { Participar } from '../components/home/Participar';
 import { Layout } from '../components/Layout';
 import { AuthContext } from '../context/authContext';
-//import styles from '../styles/Home.module.css'
 
 const Home: NextPage = () => {
 
@@ -24,6 +23,7 @@ const Home: NextPage = () => {
       <Header/>
       <Counter/>
       <Participar/>
+      <AboutQatar/>
     </Layout>
   )
 }
