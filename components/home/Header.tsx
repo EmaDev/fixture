@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const Container = styled.header`
    position:relative;
    width: 100%;
-   min-height: 100vh;
+   min-height: 95vh;
    background: #470b20 url('/background.svg');
    background-size: cover;
    background-repeat: no-repeat;

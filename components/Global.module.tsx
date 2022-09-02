@@ -21,17 +21,19 @@ export const Button = styled.button<any>`
 `;
 
 export const HeaderHello = styled.header`
-   padding: 1rem;
+   padding: 0 1rem;
+   padding-top: 3rem;
    width: 100%;
    align-items: center;
    position:relative;
+   display:flex;
+   justify-content: space-between;
 `;
 export const HelloText = styled.h2`
    color: #e1e1e1;
-   font-size: 3rem;
+   font-size: 3.2rem;
    span{
-    display: block;
-    font-size: 2rem;
+    font-size: 2.6rem;
    }
 `;
 

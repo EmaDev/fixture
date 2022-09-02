@@ -61,11 +61,14 @@ export const AboutQatar = () => {
                 <br/>
                 <SubTitle>Estadios</SubTitle>
                 <CardSlider>
-                    <Card title="Pais Anfitrion" img={"/docs/anfitrion.avif"}/>
-                    <Card title="Cinco cosas imperdibles de Qatar" img={"/docs/interes.avif"}/>
-                    <Card title="Doha" img={"/docs/doha.avif"}/>
-                    <Card title="Al Wakrah" img={"/docs/alwakrah.avif"}/>
-                    <Card title="Al Khor" img={"/docs/alkhor.avif"}/>
+                    <Card title="Estadio 974" img={"/docs/974.avif"}/>
+                    <Card title="Estadio Al Thumama" img={"/docs/althumama.avif"}/>
+                    <Card title="Estadio Al Janoub" img={"/docs/aljanoub.avif"}/>
+                    <Card title="Estadio Ahmad bin Ali" img={"/docs/binali.avif"}/>
+                    <Card title="Estadio Internacional Khalifa" img={"/docs/khalifa.avif"}/>
+                    <Card title="Estadio Al Bayt" img={"/docs/albayt.avif"}/>
+                    <Card title="Estadio Lusail" img={"/docs/lusail.avif"}/>
+                    <Card title="Estadio de la Ciudad de la Educación" img={"/docs/education.avif"}/>
                 </CardSlider>
             </Content>
         </Container>

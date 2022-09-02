@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -65,18 +66,20 @@ const Button = styled.button`
 export const Participar = () => {
   return (
     <Container>
-        <Title>Como participar</Title>
-        <CardsContainer>
-          <Card>
-            <div><Image src={require('../../assets/register.png')}/></div>
-            <h4>Registrate</h4>
-          </Card>
-          <Card>
-          <div><Image src={require('../../assets/registered.png')}/></div>
+      <Title>Como participar</Title>
+      <CardsContainer>
+        <Card>
+          <div><Image src={require('../../assets/register.png')} /></div>
+          <h4>Registrate</h4>
+        </Card>
+        <Card>
+          <div><Image src={require('../../assets/registered.png')} /></div>
           <h4>Crea tu fixture</h4>
-          </Card>
-        </CardsContainer>
+        </Card>
+      </CardsContainer>
+      <Link href={'/login'}>
         <Button>Comenzar</Button>
+      </Link>
     </Container>
   )
 }

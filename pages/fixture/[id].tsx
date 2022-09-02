@@ -6,6 +6,7 @@ import { AuthContext } from '../../context/authContext';
 import { FixtureCards } from '../../components/FixtureCards';
 import { getFixtureByUid } from '../../firebase/fixtureQueries';
 import { FixtureState } from '../../context/creatorReducer';
+import { Spinner } from '../../components/Spinner';
 
 interface Response {
   ok: boolean;
@@ -26,8 +27,7 @@ const FixturePage: NextPage = () => {
 
   const [fixtureState, setFixtureState] = useState<RespFixture>();
   const { isAuthenticated } = useContext(AuthContext);
-  const router = useRouter();
-
+ 
   useEffect(() => {
     getFixture();
     if (isAuthenticated) {
@@ -48,7 +48,7 @@ const FixturePage: NextPage = () => {
   return (
     <Layout>
       {
-        (fixtureState) &&
+        (fixtureState) ?
         <FixtureCards
           groups={fixtureState.fixture.fasegrupos.groups}
           octavos={fixtureState.fixture.octavos.groups}
@@ -57,6 +57,10 @@ const FixturePage: NextPage = () => {
           final={fixtureState.fixture.final.groups}
           tercerpuesto={fixtureState.fixture.tercerpuesto.groups}
         />
+        :
+        <div className='spinner'>
+          <Spinner/>
+        </div>
       }
     </Layout>
   )

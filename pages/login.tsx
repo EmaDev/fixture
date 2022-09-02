@@ -1,19 +1,20 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Layout } from '../components/Layout';
-import { AlternativeSigIn, Button, Form, Input, QuestionLink, Title } from '../components/Register.module';
+import { AlternativeSigIn, Button, Container, Form, Input, QuestionLink, Title } from '../components/Register.module';
 import { AuthContext } from '../context/authContext';
 import googleIcon from '../assets/google.png';
 import { useForm } from '../hooks/useForm';
 import Swal from 'sweetalert2';
 import { loginWithEmailAndPassword, signInWithGoogleAccount } from '../firebase/authQueries';
-import { ok } from 'assert';
+import { Spinner } from '../components/Spinner';
 
 const LoginPage: NextPage = () => {
 
   const { isAuthenticated, logIn } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState<boolean>(false); 
   const { push } = useRouter();
   const { formValues, handleInputChange } = useForm({ email: '', pass: '' });
   const { email, pass } = formValues;
@@ -24,9 +25,11 @@ const LoginPage: NextPage = () => {
     }
   }, [isAuthenticated]);
 
-  const handleLogIn = async(e:any) => {
+  const handleLogIn = async (e: any) => {
     e.preventDefault();
-    if(email.trim() === '' || pass.trim() === ''){
+    setIsLoading(true);
+    if (email.trim() === '' || pass.trim() === '') {
+      setIsLoading(false);
       return Swal.fire({
         icon: 'error',
         text: 'Completa todos los campos'
@@ -34,7 +37,8 @@ const LoginPage: NextPage = () => {
     }
 
     const resp = await loginWithEmailAndPassword(email, pass);
-    if(!resp.ok){
+    setIsLoading(false);
+    if (!resp.ok) {
       return Swal.fire({
         icon: 'error',
         text: resp.msg
@@ -42,11 +46,14 @@ const LoginPage: NextPage = () => {
     }
 
     logIn(resp.uid);
+
   }
 
-  const handleLoginWithProvider = async() => {
+  const handleLoginWithProvider = async () => {
+    setIsLoading(true);
     const resp = await signInWithGoogleAccount();
-    if(!resp.ok){
+    setIsLoading(false);
+    if (!resp.ok) {
       return Swal.fire({
         icon: 'error',
         text: resp.msg
@@ -55,6 +62,12 @@ const LoginPage: NextPage = () => {
 
     logIn(resp.uid);
   }
+
+  if(isLoading){
+    return(<Layout>
+      <Spinner/>
+    </Layout>)
+  }
   return (
     <Layout>
       <Title>Ingresar</Title>
@@ -62,6 +75,7 @@ const LoginPage: NextPage = () => {
         <Input>
           <label>Email</label>
           <input
+            placeholder='ejemplo@gmail.com'
             onChange={handleInputChange}
             name='email'
             value={email}
@@ -70,6 +84,7 @@ const LoginPage: NextPage = () => {
         <Input>
           <label>Contraseña</label>
           <input
+            placeholder='*****'
             onChange={handleInputChange}
             name='pass'
             value={pass}
@@ -85,7 +100,6 @@ const LoginPage: NextPage = () => {
       </Button>
 
       <QuestionLink>No tenes un cuenta?<Link href={'/register'}>Registrate aqui</Link></QuestionLink>
-
     </Layout>
   )
 }

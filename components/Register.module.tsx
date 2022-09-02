@@ -1,9 +1,17 @@
 import styled from "styled-components";
 
+export const Container = styled.section`
+   min-height: 100vh;
+   display:flex;
+   flex-direction: column;
+   justify-content:center;
+   align-items:center;
+   margin:auto;
+`;
 export const Title = styled.h1`
    text-align: center;
    margin: 1rem 0;
-   padding-top: 1rem;
+   padding-top: 4rem;
    color: #e1e1e1;
    font-size: 4rem;
 `;
@@ -31,6 +39,7 @@ export const Input = styled.div`
      border-radius: 6px;
      margin: 1rem auto;
      font-size: 1.8rem;
+     opacity: 0.9;
    }
 `;
 

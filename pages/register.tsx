@@ -82,7 +82,7 @@ const SignUpPage: NextPage = () => {
             onChange={handleInputChange}
             value={email}
             name='email'
-            placeholder='Ej: ejemplo@gmail.com' />
+            placeholder='ejemplo@gmail.com' />
         </Input>
         <Input>
           <label>Contraseña</label>
@@ -91,7 +91,7 @@ const SignUpPage: NextPage = () => {
             onChange={handleInputChange}
             value={pass}
             name='pass'
-            placeholder='Ej: DtrdjF22' />
+            placeholder='*****' />
           <input
           type={'password'}
             onChange={handleInputChange}

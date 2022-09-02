@@ -17,10 +17,11 @@ const CardItem = styled.div<any>`
    }
 
    div{
-    width: 100%;
-    height:100%;
+    position:absolute;
+    width: 105%;
+    height:102%;
     background: linear-gradient(180deg,transparent,#020f2a);
-
+    left: -5px;
     p{
         text-align:center;
         font-size: 1.8rem;
