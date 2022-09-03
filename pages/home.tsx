@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { Avatar, Button, Coin, HeaderHello, HelloText, RankingCard, Title, } from '../components/Global.module';
+import { Avatar, Button, Coin, HeaderHello, HelloText, RankingCard, RankingContainer, Title, } from '../components/Global.module';
 import { ButtonLink, ButtonsContainer, CardImage, CardText, Container, FixtureCard } from '../components/Home.module';
 import { Layout } from '../components/Layout';
 import { AuthContext } from '../context/authContext';
@@ -12,17 +12,17 @@ import { firstLetterToCapitalize } from '../helpers';
 
 const HomePage: NextPage = () => {
 
-    const { isAuthenticated, user, setUserData} = useContext(AuthContext);
+    const { isAuthenticated, user, setUserData } = useContext(AuthContext);
     const { push } = useRouter();
-    
+
     useEffect(() => {
         if (!isAuthenticated) {
             push('/');
         }
         setUserData();
-    }, [isAuthenticated]);
+    }, [isAuthenticated, user]);
 
-    if(!user){
+    if (!user) {
         return <></>
     }
     return (
@@ -30,14 +30,14 @@ const HomePage: NextPage = () => {
             <HeaderHello>
                 <HelloText>Hola, <span>{firstLetterToCapitalize(user.name)}</span></HelloText>
                 <Avatar w={60} h={60} onClick={() => push('/crear')}>
-                    <Image width={'60px'} height={'60px'} 
-                    style={{borderRadius: '100%'}}
-                    src={ (user.photoURL !== '') ? user.photoURL : require('../assets/user.png')} />
+                    <Image width={'60px'} height={'60px'}
+                        style={{ borderRadius: '100%' }}
+                        src={(user.photoURL !== '') ? user.photoURL : require('../assets/user.png')} />
                 </Avatar>
             </HeaderHello>
             <br />
             <Container>
-                <Link href={`fixture/${user.uid}`}>
+                <Link href={`usuario/fixture`}>
                     <FixtureCard>
                         <CardImage>
                             <Image src={require('../assets/growth.png')} />
@@ -66,18 +66,20 @@ const HomePage: NextPage = () => {
                 </ButtonsContainer>
 
                 <Title>Ranking</Title>
-                <RankingCard>
-                    <div><Image src={require('../assets/user.png')} /></div>
-                    <p>Romario</p>
-                </RankingCard>
-                <RankingCard>
-                    <div><Image src={require('../assets/user.png')} /></div>
-                    <p>Emanuel Emanero</p>
-                </RankingCard>
-                <RankingCard>
-                    <div><Image src={require('../assets/user.png')} /></div>
-                    <p>Mr Apio</p>
-                </RankingCard>
+                <RankingContainer>
+                    <RankingCard>
+                        <div><Image src={require('../assets/user.png')} /></div>
+                        <p>Nora Norma Noriega</p>
+                    </RankingCard>
+                    <RankingCard>
+                        <div><Image src={require('../assets/user.png')} /></div>
+                        <p>Emanuel Emanero</p>
+                    </RankingCard>
+                    <RankingCard>
+                        <div><Image src={require('../assets/user.png')} /></div>
+                        <p>Mr Apio</p>
+                    </RankingCard>
+                </RankingContainer>
                 <Button block>ver mas</Button>
 
             </Container>

@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { AuthContext } from '../../context/authContext';
 import { CreatorContext } from '../../context/CreatorContext';
 import { Fase } from '../../context/creatorReducer';
 import { createUserFixture } from '../../firebase/fixtureCreatorQueries';
@@ -24,6 +25,7 @@ const fasesSteps: FaseStep[] = [
 export const FixtureCreator = () => {
 
     const { fixtureState, setCurrentStep } = useContext(CreatorContext);
+    const { isAuthenticated, user } = useContext(AuthContext);
     const [step, setStep] = useState<number>(0);
 
     const handleNextStep = () => {
@@ -35,15 +37,17 @@ export const FixtureCreator = () => {
         setCurrentStep(fasesSteps[step - 1].name);
         setStep(prev => prev - 1);
     }
-    const handleSaveFixture = async() => {
-        const resp = await createUserFixture(fixtureState, 'pepito');
-        console.log(resp);
+    const handleSaveFixture = async () => {
+        if (user) {
+            const resp = await createUserFixture(fixtureState, user.uid);
+            console.log(resp);
+        }
     }
 
     const showStepActual = () => {
         switch (step) {
             case 1:
-                return (<CreateOctavos/>);
+                return (<CreateOctavos />);
             case 2:
                 return (<CreateCuartos />);
             case 3:
@@ -53,8 +57,7 @@ export const FixtureCreator = () => {
             default:
                 return (
                     <div>
-                        <h1>Procesar fixture</h1>
-                        <button onClick={handleSaveFixture}>procesar</button>
+                        <PrimaryButton onClick={handleSaveFixture}>Procesar</PrimaryButton>
                     </div>
                 );
         }
@@ -78,8 +81,11 @@ export const FixtureCreator = () => {
                     {showStepActual()}
                 </>
             }
-            
-            <PrimaryButton onClick={handleNextStep}>Siguiente</PrimaryButton>
+
+            {
+                (step < 5) &&
+                <PrimaryButton onClick={handleNextStep}>Siguiente</PrimaryButton>
+            }
 
         </>
     )

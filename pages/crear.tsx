@@ -13,8 +13,6 @@ const initialSteps = [
 ]
 const CreateFixturePage: NextPage = () => {
 
-  const [stepActual, setStepActual] = useState(initialSteps);
- 
   return (
     <CreatorProvider>
       <Layout>

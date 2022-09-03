@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -9,11 +9,12 @@ import { AlternativeSigIn, Button, Form, Input, QuestionLink, Title } from '../c
 import googleIcon from '../assets/google.png';
 import { useForm } from '../hooks/useForm';
 import { createAnUserWithEmailAndPassword, signInWithGoogleAccount } from '../firebase/authQueries';
-import { setUserId } from 'firebase/analytics';
+import { Spinner } from '../components/Spinner';
 
 const SignUpPage: NextPage = () => {
 
-  const { isAuthenticated, logIn, setUserData } = useContext(AuthContext);
+  const { isAuthenticated, logIn} = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { push } = useRouter();
 
   const { formValues, handleInputChange } = useForm({ name: '', email: '', pass: '', pass2: '' });
@@ -25,15 +26,27 @@ const SignUpPage: NextPage = () => {
     }
   }, [isAuthenticated]);
 
+  if (isLoading) {
+    return (
+      <Layout>
+        <div className='spinner'>
+          <Spinner />
+        </div>
+      </Layout>
+    )
+  }
   const handleRegisterWithEmail = async(e:any) => {
     e.preventDefault();
+    setIsLoading(true);
     if(name.trim() === '' || email.trim() === '' || pass.trim() === ''){
+      setIsLoading(false);
       return Swal.fire({
         icon: 'error',
         text: 'Todos los campos son obligatorios'
       })
     }
     if(pass !== pass2){
+      setIsLoading(false);
       return Swal.fire({
         icon: 'error',
         text: 'Las contraseñas son distintas'
@@ -42,6 +55,7 @@ const SignUpPage: NextPage = () => {
 
     const resp = await createAnUserWithEmailAndPassword(name, email, pass);
     if(!resp.ok){
+      setIsLoading(false);
       return Swal.fire({
         icon: 'error',
         text: resp.msg
@@ -51,8 +65,10 @@ const SignUpPage: NextPage = () => {
   }
 
   const handleRegisterWithProvider = async() => {
+    setIsLoading(true);
     const resp = await signInWithGoogleAccount();
     if(!resp.ok){
+      setIsLoading(false);
       return Swal.fire({
         icon: 'error',
         text: resp.msg

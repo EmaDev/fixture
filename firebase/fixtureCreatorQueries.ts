@@ -26,8 +26,8 @@ export const createUserFixture = async (fixture: FixtureState, uid: string, grou
             grupo: groupId ? groupId : null,
             fixture,
             fecha: {
-                dia: new Date().getDay,
-                mes: new Date().getMonth 
+                dia: '',
+                mes: ''
             }
         }
 

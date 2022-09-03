@@ -27,16 +27,19 @@ const FixturePage: NextPage = () => {
 
   const [fixtureState, setFixtureState] = useState<RespFixture>();
   const { isAuthenticated } = useContext(AuthContext);
+  const {asPath} = useRouter();
  
   useEffect(() => {
-    getFixture();
+
+    const fixtureId = asPath.split('/');
+    getFixture(fixtureId[2]);
     if (isAuthenticated) {
 
     }
   }, []);
 
-  const getFixture = async () => {
-    const resp: Response = await getFixtureByUid('pepito');
+  const getFixture = async (id:string) => {
+    const resp: Response = await getFixtureByUid(id);
 
     if (!resp.ok) {
       console.log(resp.msg);

@@ -31,9 +31,10 @@ export const HeaderHello = styled.header`
 `;
 export const HelloText = styled.h2`
    color: #e1e1e1;
-   font-size: 3.2rem;
+   font-size: 3.1rem;
+   display:inline-grid;
    span{
-    font-size: 2.6rem;
+    font-size: 2.2rem;
    }
 `;
 
@@ -68,6 +69,9 @@ export const Title = styled.h2`
    font-size: 2.4rem;
 `;
 
+export const RankingContainer = styled.div`
+    margin-top: 2rem;
+`;
 export const RankingCard = styled.div`
    width: 90%;
    max-widht: 400px;
@@ -82,7 +86,7 @@ export const RankingCard = styled.div`
    p{
       margin: 0 1rem;
       font-weight: 500;
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       color: #2F2F2F;
    }
 
@@ -92,3 +96,19 @@ export const RankingCard = styled.div`
       border-radius:100%;
    }
 `;
+
+export const NoFixtureContainer = styled.div`
+   width: 100%;
+   height: 90vh;
+   display:flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items:center;
+
+   h1{
+      padding-top: 2rem;
+      font-size: 2rem;
+      color: #e1e1e1;
+   }
+`;
+

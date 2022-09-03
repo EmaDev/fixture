@@ -14,7 +14,7 @@ import { Spinner } from '../components/Spinner';
 const LoginPage: NextPage = () => {
 
   const { isAuthenticated, logIn } = useContext(AuthContext);
-  const [isLoading, setIsLoading] = useState<boolean>(false); 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { push } = useRouter();
   const { formValues, handleInputChange } = useForm({ email: '', pass: '' });
   const { email, pass } = formValues;
@@ -63,10 +63,14 @@ const LoginPage: NextPage = () => {
     logIn(resp.uid);
   }
 
-  if(isLoading){
-    return(<Layout>
-      <Spinner/>
-    </Layout>)
+  if (isLoading) {
+    return (
+      <Layout>
+        <div className='spinner'>
+          <Spinner />
+        </div>
+      </Layout>
+    )
   }
   return (
     <Layout>

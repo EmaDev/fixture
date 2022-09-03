@@ -86,7 +86,7 @@ export const PrimearyTilte = styled.h1`
   font-size: 2.2rem;
   color: #C6891D;
   margin: 0;
-  padding-top: 1rem;
+  padding-top: 2.2rem;
   text-align: center;
   text-shadow: 0 0 4px #E0AB55;
 `;

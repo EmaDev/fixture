@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useContext, useEffect } from 'react';
+import { Footer } from '../components/Footer';
 import { AboutQatar } from '../components/home/AboutQatar';
 import { Counter } from '../components/home/Counter';
 import { Header } from '../components/home/Header';
@@ -24,6 +25,7 @@ const Home: NextPage = () => {
       <Counter/>
       <Participar/>
       <AboutQatar/>
+      <Footer/>
     </Layout>
   )
 }
