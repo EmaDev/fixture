@@ -1,5 +1,7 @@
 import { NextPage } from 'next';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { icons } from 'react-icons/lib';
+import Swal from 'sweetalert2';
 import { FixtureCreator } from '../components/creator/FixtureCreator';
 import { Layout } from '../components/Layout';
 import { CreatorContext, CreatorProvider } from '../context/CreatorContext';
@@ -13,10 +15,16 @@ const initialSteps = [
 ]
 const CreateFixturePage: NextPage = () => {
 
+  useEffect(() => {
+    Swal.fire({
+      icon: 'info',
+      title: 'Ingresa los resultados de cada partido para cada fase'
+    })
+  }, []);
   return (
     <CreatorProvider>
       <Layout>
-        <FixtureCreator/>
+        <FixtureCreator />
       </Layout>
     </CreatorProvider>
   )

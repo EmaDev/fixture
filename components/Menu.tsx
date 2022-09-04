@@ -4,6 +4,7 @@ import { GrFormClose } from 'react-icons/gr';
 import { AuthContext } from '../context/authContext';
 import { Button } from './Global.module';
 import { NavBar } from './NavBar';
+import { useRouter } from 'next/router';
 
 const MenuLateral = styled.aside`
    position:fixed;
@@ -50,10 +51,16 @@ const ButtonLogOut = styled.button`
 export const Menu = () => {
 
     const { logOut } = useContext(AuthContext);
+    const {push} = useRouter();
     const menuRef: any = useRef();
 
     const handleCloseMenu = () => {
         menuRef.current.classList.add('ocultarMenu');
+    }
+
+    const handleLogOut = () => {
+        logOut();
+        push('/');
     }
     return (
         <>
@@ -62,7 +69,7 @@ export const Menu = () => {
                 <ButtonClose onClick={handleCloseMenu}>
                     <GrFormClose />
                 </ButtonClose>
-                <ButtonLogOut onClick={logOut}>Cerrar sesion</ButtonLogOut>
+                <ButtonLogOut onClick={handleLogOut}>Cerrar sesion</ButtonLogOut>
             </MenuLateral>
             <div style={{ marginTop: '50px' }} />
         </>

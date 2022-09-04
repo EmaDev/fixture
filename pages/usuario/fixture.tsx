@@ -48,7 +48,7 @@ const FixturePage: NextPage = () => {
                         {(!fixtureState) &&
                             <NoFixtureContainer>
                                 <h1>No tenes un fixture creado</h1>
-                                <Button>Crea tu fixture</Button>
+                                <Button onClick={() => push('/crear')}>Crea tu fixture</Button>
                             </NoFixtureContainer>
 
                         }
