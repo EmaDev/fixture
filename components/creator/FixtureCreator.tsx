@@ -1,14 +1,19 @@
+import Image from 'next/image';
 import React, { useContext, useState } from 'react';
+import {HiLockClosed, HiOutlineCreditCard, } from 'react-icons/hi';
+import {ImCreditCard} from 'react-icons/im';
 import { AuthContext } from '../../context/authContext';
 import { CreatorContext } from '../../context/CreatorContext';
 import { Fase } from '../../context/creatorReducer';
 import { createUserFixture } from '../../firebase/fixtureCreatorQueries';
 import { CreateFixtureCard } from '../CreateFixtureCard';
-import { PrimaryButton, PrimearyTilte } from '../Fixture.module';
+import { Container, ImageMetodoPago, ModalPagoDescription, ModalProcesarPago, PrimaryButton, PrimearyTilte, TerminosPago } from '../Fixture.module';
 import { CreateCuartos } from './CreateCuartos';
 import { CreateFinal } from './CreateFinal';
 import { CreateOctavos } from './CreateOctavos';
 import { CreateSemis } from './CreateSemis';
+import { CreateTercerPuesto } from './CreateTercerPuesto';
+import { Payment } from './Payment';
 
 interface FaseStep {
     name: Fase;
@@ -25,18 +30,18 @@ const fasesSteps: FaseStep[] = [
 export const FixtureCreator = () => {
 
     const { fixtureState, setCurrentStep } = useContext(CreatorContext);
-    const { isAuthenticated, user } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     const [step, setStep] = useState<number>(0);
 
     const handleNextStep = () => {
-        setCurrentStep(fasesSteps[step + 1].name);
-        setStep(prev => prev + 1);
+        if (step < 5) {
+            setCurrentStep(fasesSteps[step + 1].name);
+            setStep(prev => prev + 1);
+        } else {
+            setStep(prev => prev + 1);
+        }
     }
 
-    const handlePrevStep = () => {
-        setCurrentStep(fasesSteps[step - 1].name);
-        setStep(prev => prev - 1);
-    }
     const handleSaveFixture = async () => {
         if (user) {
             const resp = await createUserFixture(fixtureState, user.uid);
@@ -54,18 +59,18 @@ export const FixtureCreator = () => {
                 return (<CreateSemis />);
             case 4:
                 return (<CreateFinal />);
+            case 5:
+                return (<CreateTercerPuesto />);
             default:
                 return (
-                    <div>
-                        <PrimaryButton onClick={handleSaveFixture}>Procesar</PrimaryButton>
-                    </div>
+                    <Payment/>
                 );
         }
     }
 
     return (
-        <>
-            <PrimearyTilte>Crea tu Fixture</PrimearyTilte>
+        <Container>
+            {(step < 6) && <PrimearyTilte>Crea tu Fixture</PrimearyTilte>}
             {(step === 0) ?
                 fixtureState.fasegrupos.groups.map(group => (
                     <CreateFixtureCard
@@ -83,10 +88,10 @@ export const FixtureCreator = () => {
             }
 
             {
-                (step < 5) &&
+                (step < 6) &&
                 <PrimaryButton onClick={handleNextStep}>Siguiente</PrimaryButton>
             }
-
-        </>
+        
+        </Container>
     )
 }

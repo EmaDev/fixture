@@ -4,14 +4,14 @@ import { firstLetterToCapitalize, orderFinalMatch } from '../../helpers';
 import { CreateFixtureCard } from '../CreateFixtureCard';
 import { StepTitle } from '../Fixture.module';
 
-export const CreateFinal = () => {
+export const CreateTercerPuesto = () => {
 
     const { fixtureState, setFase, currentStep } = useContext(CreatorContext);
 
     useEffect(() => {
 
-        const {final} = orderFinalMatch(fixtureState.semifinal.groups);
-        setFase('final', final);
+        const {tercerPuesto} = orderFinalMatch(fixtureState.semifinal.groups);
+        setFase('tercerpuesto', tercerPuesto);
 
     }, []);
 
@@ -19,7 +19,7 @@ export const CreateFinal = () => {
         <>
             <StepTitle>{firstLetterToCapitalize(currentStep)}</StepTitle>
             {
-                fixtureState.final.groups.map(group => (
+                fixtureState.tercerpuesto.groups.map(group => (
                     <CreateFixtureCard
                         key={group.title + group.id}
                         title={group.title}
