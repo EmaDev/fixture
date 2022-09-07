@@ -20,17 +20,26 @@ const CardsContainer = styled.div`
     margin: 2rem auto;
     max-width: 500px;
 `;
-
+const CardSlider = styled.div`
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  padding: 1rem 0;
+  margin: 2rem auto;
+  overflow-x: auto;
+`;
 const Card = styled.div`
-   width: 90%;
+   min-width: 160px;
+   height: 215px;
    padding-top: 2rem;
    background-color: #e1e1e1;
-   margin:auto;
+   margin: auto .5rem;
    border-radius: 30px;
    display: flex;
    flex-direction:column;
    justify-content:center;
    align-items:center;
+   box-shadow: 2px 2px 6px #430a1e;
    h4{
     text-align: center;
     color: #1A1A1A;
@@ -67,7 +76,7 @@ export const Participar = () => {
   return (
     <Container>
       <Title>Como participar</Title>
-      <CardsContainer>
+      <CardSlider>
         <Card>
           <div><Image src={require('../../assets/register.png')} /></div>
           <h4>Registrate</h4>
@@ -76,7 +85,11 @@ export const Participar = () => {
           <div><Image src={require('../../assets/registered.png')} /></div>
           <h4>Crea tu fixture</h4>
         </Card>
-      </CardsContainer>
+        <Card>
+          <div><Image src={require('../../assets/paymentcard.png')} /></div>
+          <h4>Pago la inscripcion</h4>
+        </Card>
+      </CardSlider>
       <Link href={'/login'}>
         <Button>Comenzar</Button>
       </Link>

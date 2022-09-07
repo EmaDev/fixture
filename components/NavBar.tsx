@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { HiMenu, HiUser } from 'react-icons/hi';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { AuthContext } from '../context/authContext';
 
 const NavBarHeader = styled.header`
    position: fixed;
@@ -42,6 +43,7 @@ interface Props {
 export const NavBar = ({ menuRef }: Props) => {
 
     const { push } = useRouter();
+    const { isAuthenticated } = useContext(AuthContext);
     const handleOpenMenu = () => {
 
         menuRef.current.classList.remove('ocultarMenu');
@@ -57,9 +59,12 @@ export const NavBar = ({ menuRef }: Props) => {
                     <Image src={require('../assets/icon-nav.svg')} />
                 </LogoButton>
             </Link>
-            <ActionButton pos={'right: 1rem'}>
-                <HiUser onClick={() => push('/login')} />
-            </ActionButton>
+            {
+                (!isAuthenticated) &&
+                <ActionButton pos={'right: 1rem'}>
+                    <HiUser onClick={() => push('/login')} />
+                </ActionButton>
+            }
         </NavBarHeader>
     )
 }
