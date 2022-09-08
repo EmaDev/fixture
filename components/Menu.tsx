@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { GrFormClose } from 'react-icons/gr';
-import { AiFillHome,AiFillQuestionCircle } from 'react-icons/ai';
+import { AiFillHome, AiFillQuestionCircle } from 'react-icons/ai';
 import { GiTrophyCup } from 'react-icons/gi';
 import { FaUserAlt, FaGamepad, FaPhoneAlt } from 'react-icons/fa';
 
@@ -13,6 +13,14 @@ import { AuthContext } from '../context/authContext';
 import { NavBar } from './NavBar';
 
 
+const MenuContainer = styled.div`
+   position: fixed;
+   z-index: 998;
+   background-color: rgba(0,0,0,0.8);
+   width: 100%;
+   height: 100vh;
+   overflow-y:hidden
+`;
 
 const MenuLateral = styled.aside`
    position:fixed;
@@ -104,27 +112,32 @@ export const Menu = () => {
                 <ButtonClose onClick={handleCloseMenu}>
                     <GrFormClose />
                 </ButtonClose>
-                <ButtonLogOut onClick={handleLogOut}>Cerrar sesion</ButtonLogOut>
+
 
                 {isAuthenticated &&
-                    <Ul>
-                        <li><AiFillHome /><p><Link href={''}>Inicio</Link></p></li>
-                        <li><FaUserAlt /><p><Link href={''}>cuenta</Link></p></li>
-                        <li><GiTrophyCup /><p><Link href={''}>Ranking</Link></p></li>
-                        <li><FaGamepad /><p><Link href={''}>Trivias</Link></p></li>
-                        <li><FaPhoneAlt /><p><Link href={''}>contacto</Link></p></li>
-                    </Ul>
+                    <>
+                        <ButtonLogOut onClick={handleLogOut}>Cerrar sesion</ButtonLogOut>
+                        <Ul>
+                            <li><AiFillHome /><p><Link href={'/home'}>Inicio</Link></p></li>
+                            <li><FaUserAlt /><p><Link href={'/usuario/perfil'}>cuenta</Link></p></li>
+                            <li><GiTrophyCup /><p><Link href={'/fixture/ranking'}>Ranking</Link></p></li>
+                            <li><FaGamepad /><p><Link href={'/juegos/trivia'}>Trivias</Link></p></li>
+                            <li><FaPhoneAlt /><p><Link href={''}>contacto</Link></p></li>
+                        </Ul>
+                    </>
                 }
                 {
                     (!isAuthenticated) &&
-                    <Ul>
-                    <li><AiFillHome/><p><Link href={'/'}>Inicio</Link></p></li>
-                    <li><FaUserAlt/><p><Link href={'/login'}>Ingresar</Link></p></li>
-                    <li><GiTrophyCup/><p><Link href={''}>Ranking</Link></p></li>
-                    <li><FaGamepad/><p><Link href={''}>Juegos</Link></p></li>
-                    <li><FaPhoneAlt/><p><Link href={''}>contacto</Link></p></li>
-                    <li><AiFillQuestionCircle/><p style={{fontSize: '1.6rem'}}><Link href={''}>Preguntas frecuentes</Link></p></li>
-                </Ul>
+                    <>
+                        <Ul>
+                            <li><AiFillHome /><p><Link href={'/'}>Inicio</Link></p></li>
+                            <li><FaUserAlt /><p><Link href={'/login'}>Ingresar</Link></p></li>
+                            <li><GiTrophyCup /><p><Link href={'/fixture/ranking'}>Ranking</Link></p></li>
+                            <li><FaGamepad /><p><Link href={'/juegos/trivia'}>Juegos</Link></p></li>
+                            <li><FaPhoneAlt /><p><Link href={''}>contacto</Link></p></li>
+                            <li><AiFillQuestionCircle /><p style={{ fontSize: '1.6rem' }}><Link href={''}>Preguntas frecuentes</Link></p></li>
+                        </Ul>
+                    </>
                 }
             </MenuLateral>
             <div style={{ marginTop: '50px' }} />

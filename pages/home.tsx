@@ -29,7 +29,7 @@ const HomePage: NextPage = () => {
         <Layout>
             <HeaderHello>
                 <HelloText>Hola, <span>{firstLetterToCapitalize(user.name)}</span></HelloText>
-                <Avatar w={60} h={60} onClick={() => push('/crear')}>
+                <Avatar w={60} h={60} onClick={() => push('/usuario/perfil')}>
                     <Image width={'60px'} height={'60px'}
                         style={{ borderRadius: '100%' }}
                         src={(user.photoURL !== '') ? user.photoURL : require('../assets/user.png')} />

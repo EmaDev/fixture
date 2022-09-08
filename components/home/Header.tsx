@@ -67,8 +67,8 @@ export const Header = () => {
                         src={require('../../assets/cup.png')} />
                 </ImageContainer>
                 <TextBanner>
-                    <Title>Crea tu fixture online</Title>
-                    <Subtitle>Aposta con tus amigos y participa por los premios</Subtitle>
+                    <Title>Crea tu Prode online</Title>
+                    <Subtitle>Diseña tu fixture y aposta con tus amigos</Subtitle>
                 </TextBanner>
             </Banner>
         </Container>

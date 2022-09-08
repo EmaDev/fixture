@@ -4,7 +4,6 @@ import styled from 'styled-components';
 const Card = styled.div<any>`
    min-width: 190px;
    height: 110px;
-   background-color: red;
    margin: 0 1rem;
    border-radius: 8px;
    background-image: url('${({img}) => img}');

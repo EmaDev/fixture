@@ -66,13 +66,13 @@ export const Counter = () => {
       <Title>El torneo comienza en</Title>
       <CounterContainer>
         <CounterItem>
-          <p>80</p><span>Dias</span>
+          <p>72</p><span>Dias</span>
         </CounterItem>
         <CounterItem>
-          <p>15</p><span>horas</span>
+          <p>21</p><span>horas</span>
         </CounterItem>
         <CounterItem>
-          <p>43</p><span>minutos</span>
+          <p>32</p><span>minutos</span>
         </CounterItem>
 
       </CounterContainer>
