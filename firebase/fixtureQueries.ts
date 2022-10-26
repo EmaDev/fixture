@@ -1,4 +1,5 @@
-import { getFirestore, doc, getDoc, query, collection, getDocs } from "firebase/firestore";
+import { getFirestore, doc, getDoc, query, collection, getDocs, where, limit } from "firebase/firestore";
+import { RankingItem } from "../components/others/RankingCard";
 import { FixtureState } from "../context/creatorReducer";
 import { ordernarArray } from "../helpers";
 import { app } from './config';
@@ -51,14 +52,14 @@ export const getFixtureByUid = async (uid: string) => {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-        
+
         const fixture: any = docSnap.data();
         return {
             ok: true,
             data: fixture,
             msg: 'Ok'
         };
-    } 
+    }
 
     return {
         ok: false,
@@ -66,4 +67,65 @@ export const getFixtureByUid = async (uid: string) => {
         msg: 'El fixture buscado no existe'
     }
 
+}
+
+interface Resp {
+    ok:boolean;
+    data: RankingItem[];
+}
+export const getRankingByGroup = async (group: string = '', limite: number = 1000) => {
+
+    try {
+        //TODO: Order por mayor puntuacion
+        const q = query(collection(db, "fixtures"),limit(limite),where("grupo", "==", group));
+        const ranking: any = [];
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach(async(doc) => {
+            const {ok, data}:any = await getUserByUid(doc.data().user);
+            if(ok){
+                ranking.push({
+                    fixtureId: doc.id,
+                    userData: {
+                        user: data.uid,
+                        name: data.name,
+                        photoURL: data.photoURL,
+                        score:data.score
+                    }
+                })
+            }
+        });
+        return<Resp> {
+            ok: true,
+            data: ranking
+        }
+    } catch (error:any) {
+        console.log(error);
+        return<Resp> {
+            ok:false,
+            data: []
+        }
+    }
+} 
+
+
+const getUserByUid = async(uid:string) => {
+    try {
+        const docSnap = await getDoc(doc(db, 'users', uid));
+        if (docSnap.exists()) {
+            return{
+                ok: true,
+                data: docSnap.data()
+            }
+        }else{
+            return{
+                ok:false,
+                data: null
+            }
+        }
+    } catch (error) {
+        return {
+            ok:false,
+            data: null
+        }
+    }
 }

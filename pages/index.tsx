@@ -11,14 +11,17 @@ import { AuthContext } from '../context/authContext';
 
 const Home: NextPage = () => {
 
-  const {isAuthenticated} = useContext(AuthContext);
+  const {isAuthenticated, isLoading} = useContext(AuthContext);
   const router = useRouter();
 
   useEffect( () => {
-    if(isAuthenticated) {
+    
+    if(isAuthenticated && !isLoading) {
        router.push('/home');
     }
-  },[isAuthenticated])
+
+  },[isAuthenticated]);
+
   return (
     <Layout>
       <Header/>

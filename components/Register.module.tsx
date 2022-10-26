@@ -20,14 +20,30 @@ export const Form = styled.form`
    max-width: 500px;
    padding: 1rem;
    margin:auto;
+   h2{
+      margin: 1rem 2rem;
+      font-size: 2.8rem;
+   }
+`;
+
+export const ButtonsContainer = styled.div`
+   width: 90%;
+   display:flex;
+   margin:1rem auto;
 `;
 
 export const Input = styled.div`
    width: 90%;
    margin: auto; 
+   span{
+      margin: 0 1rem;
+      font-weight: 700;
+      font-size: 1.4rem; 
+      color: #e83f3f;
+   }
    label{
     font-weight: 700;
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     color: #e1e1e1;
     margin: 0;
    }
@@ -40,6 +56,13 @@ export const Input = styled.div`
      margin: 1rem auto;
      font-size: 1.8rem;
      opacity: 0.9;
+   }
+   textarea{
+      display: block;
+      width: 100%;
+      height: 160px;
+      border-radius: 6px;
+      font-size: 1.8rem;
    }
 `;
 

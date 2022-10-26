@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export const Button = styled.button<any>`
    border-style: none;
-   background-color: #3f8bda;
+   background-color: ${({bg})=> bg ? bg : '#3f8bda'};
    padding: 1rem 3rem;
    border-radius: 6px;
    font-size: 1.8rem;
@@ -18,6 +18,21 @@ export const Button = styled.button<any>`
     box-shadow: 1px 1px 3px #527d96;
     transition: .5s ease;
    }
+`;
+
+export const BigButton = styled.div`
+   border-style: none;
+   background-color: ${({color})=> color ? color : '#3f8bda'};
+   padding: 1.5rem 3rem;
+   border-radius: 6px;
+   font-size: 2rem;
+   font-weight: 700;
+   text-align:center;
+   color: #fff;
+   display: block;
+   width: 90%;
+   max-width: 400px;
+   margin:1rem auto; 
 `;
 
 export const HeaderHello = styled.header`
@@ -67,10 +82,24 @@ export const Title = styled.h2`
    font-weight: 700;
    color: #2F2F2F;
    font-size: 2.4rem;
+
+   span{
+      margin: 0 1rem;
+      font-size: 1.6rem;
+      background-color: #3f8bda;
+      color: #fff;
+      padding: .5rem; 
+      border-radius: 6px;
+
+      &:hover{
+         background-color: #26517d;
+         transition: .3s ease;
+      }
+   }
 `;
 
 export const RankingContainer = styled.div`
-    margin-top: 2rem;
+    margin: 2rem auto;
 `;
 export const RankingCard = styled.div`
    width: 90%;

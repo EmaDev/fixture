@@ -1,5 +1,4 @@
 import React from 'react';
-import Image from 'next/image';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCards } from "swiper";
 import "swiper/css";
@@ -7,7 +6,8 @@ import "swiper/css/effect-cards";
 import { FixtureCardItem, Title } from './Fixture.module';
 import styled from 'styled-components';
 import { FixtureMatchs } from './FixtureMatchs';
-import { idToGroupName, ordernarArray } from '../helpers';
+import { FixtureState } from '../context/creatorReducer';
+import { idToGroupName } from '../helpers';
 
 const MyCards = styled.div`
    position: abolute;
@@ -29,12 +29,12 @@ const TitleCard = styled.h1`
 `;
 
 interface Props {
+    fases: Fase[];
+}
+interface Fase {
+    id: number;
+    title: string;
     groups: Group[];
-    octavos: Group[];
-    cuartos: Group[];
-    semifinal: Group[];
-    final: Group[];
-    tercerpuesto: Group[];
 }
 interface Group {
     id: string;
@@ -45,12 +45,16 @@ interface Match {
     local: any;
     visitor: any;
 }
-export const FixtureCards = ({ groups, octavos, cuartos, semifinal, final, tercerpuesto }: Props) => {
+export const FixtureCards = ({ fases }: Props) => {
 
-    return (
-        <>
-            <MyCards>
-                <TitleCard>Fase de Grupos</TitleCard>
+    const showCardComponent = (fase: Fase) => {
+
+        if (fase.groups.length < 1) {
+            return (null)
+        }
+        return (
+            <MyCards id={`${fase.id}${fase.title}`}>
+                <TitleCard>{fase.title}</TitleCard>
                 <Swiper
                     effect={"cards"}
                     grabCursor={true}
@@ -58,7 +62,7 @@ export const FixtureCards = ({ groups, octavos, cuartos, semifinal, final, terce
                     className="mySwiper"
                 >
                     {
-                        groups.map(group => (
+                        fase.groups.map(group => (
                             <SwiperSlide key={group.id}>
                                 <FixtureCardItem>
                                     <Title>{`Grupo ${idToGroupName(group.id)}`}</Title>
@@ -72,106 +76,14 @@ export const FixtureCards = ({ groups, octavos, cuartos, semifinal, final, terce
 
                 </Swiper>
             </MyCards>
-            <MyCards>
-                <TitleCard>Octavos de final</TitleCard>
-                <Swiper
-                    effect={"cards"}
-                    grabCursor={true}
-                    modules={[EffectCards]}
-                    className="mySwiper"
-                >
-                    {
-                        octavos.map(group => (
-                            <SwiperSlide key={group.id}>
-                                <FixtureCardItem>
-                                    <Title>{`Lado ${idToGroupName(group.id)}`}</Title>
-                                    <FixtureMatchs
-                                        matches={group.matches}
-                                    />
-                                </FixtureCardItem>
-                            </SwiperSlide>
-                        ))
-                    }
+        )
+    }
 
-                </Swiper>
-            </MyCards>
-
-            <MyCards>
-                <TitleCard>Cuartos de final</TitleCard>
-                <Swiper
-                    effect={"cards"}
-                    grabCursor={true}
-                    modules={[EffectCards]}
-                    className="mySwiper"
-                >
-                    {
-                        cuartos.map(group => (
-                            <SwiperSlide key={group.id}>
-                                <FixtureCardItem>
-                                    <Title>{`Lado ${idToGroupName(group.id)}`}</Title>
-                                    <FixtureMatchs
-                                        matches={group.matches}
-                                    />
-                                </FixtureCardItem>
-                            </SwiperSlide>
-                        ))
-                    }
-
-                </Swiper>
-            </MyCards>
-            <MyCards>
-                <TitleCard>Seminal</TitleCard>
-                <Swiper
-                    effect={"cards"}
-                    grabCursor={true}
-                    modules={[EffectCards]}
-                    className="mySwiper"
-                >
-                    {
-                        semifinal.map(group => (
-                            <SwiperSlide key={group.id}>
-                                <FixtureCardItem>
-                                    <Title>{`Lado ${idToGroupName(group.id)}`}</Title>
-                                    <FixtureMatchs
-                                        matches={group.matches}
-                                    />
-                                </FixtureCardItem>
-                            </SwiperSlide>
-                        ))
-                    }
-                </Swiper>
-            </MyCards>
-
-            <MyCards>
-                <TitleCard>Final</TitleCard>
-                {
-                    final.map(group => (
-                        <SwiperSlide key={group.id}>
-                            <FixtureCardItem>
-                                <Title>Final</Title>
-                                <FixtureMatchs
-                                    matches={group.matches}
-                                />
-                            </FixtureCardItem>
-                        </SwiperSlide>
-                    ))
-                }
-            </MyCards>
-            <MyCards>
-                <TitleCard>Tercer Puesto</TitleCard>
-                {
-                    tercerpuesto.map(group => (
-                        <SwiperSlide key={group.id}>
-                            <FixtureCardItem>
-                                <Title>Tercer Puesto</Title>
-                                <FixtureMatchs
-                                    matches={group.matches}
-                                />
-                            </FixtureCardItem>
-                        </SwiperSlide>
-                    ))
-                }
-            </MyCards>
-        </>
+    return (
+        <>{
+            fases.map(fase => {
+                return showCardComponent(fase)
+            })
+        }</>
     )
 }

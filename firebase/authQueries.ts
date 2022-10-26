@@ -27,7 +27,7 @@ export const detectarCambiosEnLaSesion = async(logIn:any) => {
             logIn(user.uid);
         }
     });
-
+    
 }
 
 export const createAnUserWithEmailAndPassword = async (name: string, email: string, password: string) => {
@@ -145,14 +145,15 @@ export const getUserData = async (uid: string) => {
 
         if (docSnap.exists()) {
              
-            return {
+            return<any>{
                 ok: true,
                 data: docSnap.data()
             }
         }else{
-            return {
+            return<any>{
                 ok:false,
-                msg: 'Uusario no encontrado'
+                msg: 'Usuario no encontrado',
+                data: null
             }
         }
 

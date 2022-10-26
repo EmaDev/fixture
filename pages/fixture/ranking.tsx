@@ -1,8 +1,12 @@
+import React, { useContext, useEffect, useState } from 'react';
 import { NextPage } from 'next';
-import React from 'react';
 import styled from 'styled-components';
+import { RankingContainer } from '../../components/Global.module';
 import { Layout } from '../../components/Layout';
-import { RankingCard } from '../../components/others/RankingCard';
+import { RankingCard, RankingItem } from '../../components/others/RankingCard';
+import { AuthContext } from '../../context/authContext';
+import { getRankingByGroup } from '../../firebase/fixtureQueries';
+import { Spinner } from '../../components/Spinner';
 
 const Container = styled.div`
    min-height: 100vh;
@@ -23,22 +27,47 @@ const Title = styled.h1`
     text-align:center;
    }
 `;
-const user = [1,2,3,4,5,6,7,8,9];
-const RankingPage:NextPage = () => {
+
+const RankingPage: NextPage = () => {
+  const { userFixture } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [rankingState, setRankingState] = useState<RankingItem[]>([]);
+
+  useEffect(() => {
+    if (userFixture?.grupo) {
+      getRanking(userFixture.grupo);
+    }
+  }, [userFixture])
+
+
+  const getRanking = async (uid: string) => {
+    
+    const resp = await getRankingByGroup(uid);
+    setTimeout( () => {
+      setIsLoading(false);
+      setRankingState(resp.data);
+    }, 1000);
+    
+  }
+
   return (
     <Layout>
-        <Title>Ranking</Title>
-        <Container>
-            {user.map(rank => (
-                <RankingCard
-                key={rank}
-                name='Emanuel Cisterna'
-                uid='4oDuWidij2PV52Q1Lu8zKyqjjtp1'
-                photo=''
-                score='28'
-                />
-            ))}
-        </Container>
+      <Title>Ranking</Title>
+      <RankingContainer>
+        {
+          (isLoading) ? <div className='spinner'><Spinner/></div>
+          :
+          <>
+          {rankingState.map( item => (
+            <RankingCard
+            key={item.fixtureId}
+            userData={item.userData}
+            fixtureId={item.fixtureId}
+            />
+          ))}
+          </>
+        }
+      </RankingContainer>
     </Layout>
   )
 }

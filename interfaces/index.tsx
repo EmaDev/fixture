@@ -1,3 +1,5 @@
+import { FixtureState } from "../context/creatorReducer";
+
 export interface FaseInterface {
     title: string;
     id: number;
@@ -27,3 +29,13 @@ export type Countries =
 |'belgica'| 'canada'|'marruecos'|'croacia'
 | 'brasil'|'serbia'|'suiza'|'camerun'
 | 'portugal'|'ghana'|'uruguay'|'corea';
+
+
+export interface FixtureData {
+    grupo: string;
+    fecha: {
+        dia: string; mes: string;
+    };
+    user:string;
+    fixture: FixtureState;
+} 

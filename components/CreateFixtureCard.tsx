@@ -19,7 +19,6 @@ export const CreateFixtureCard: FC<Props> = ({ id, showTitle, matches, lado }) =
     const {setMatch, currentStep} = useContext(CreatorContext);
 
     const handleChangeGroupValues = (dataMatch:Match) => {
-        
         setMatch(currentStep, id.toString(), dataMatch);  
     }
 

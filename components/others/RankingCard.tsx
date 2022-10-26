@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 
 const Card = styled.div`
    padding: 1rem;
-   width: 100%;
+   width: 95%;
    margin: 1rem auto;
    display: flex;
    justify-content: space-between;
@@ -29,6 +29,7 @@ const NameAndPhoto = styled.div`
     height: 40px;
     border-radius: 100%;
     background-color: gray;
+    margin:auto;
   }
   p{
     font-size: 1.8rem;
@@ -49,25 +50,30 @@ const Points = styled.div`
    }
 `;
 
-interface Props {
-    uid: string;
-    name: string;
-    score: string;
-    photo: string;
+export interface RankingItem {
+  fixtureId?: string;
+  userData: {
+    user: string;
+    name:string;
+    photoURL:string;
+    score: {};
+  }
 }
-export const RankingCard = ({name,uid,photo,score}:Props) => {
+export const RankingCard = ({userData}:RankingItem) => {
     const {push} = useRouter();
     return (
-        <Card onClick={() => push(`/fixture/${uid}`)}>
+        <Card onClick={() => push(`/fixture/${userData.user}`)}>
             <NameAndPhoto>
                 <div>
-                    <Image src={(photo) ? photo : require('../../assets/user.png')}/>
+                    <Image src={(userData.photoURL) ? userData.photoURL : require('../../assets/user.png')}
+                    width={40} height={40} style={{borderRadius: '50%'}}
+                    />
                 </div>
-                <p>{name}</p>
+                <p>{userData.name}</p>
             </NameAndPhoto>
             <Points>
                 <AiFillStar size={'1.8rem'} color={'#ae8348'} />
-                <p>{score}</p>
+                <p>{1500/*score*/}</p>
             </Points>
         </Card>
     )

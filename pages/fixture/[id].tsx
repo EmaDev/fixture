@@ -1,12 +1,13 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { Layout } from '../../components/Layout';
-import { AuthContext } from '../../context/authContext';
 import { FixtureCards } from '../../components/FixtureCards';
 import { getFixtureByUid } from '../../firebase/fixtureQueries';
-import { FixtureState } from '../../context/creatorReducer';
 import { Spinner } from '../../components/Spinner';
+import Swal from 'sweetalert2';
+import { Group } from '../../interfaces';
+import { ordernarArray } from '../../helpers';
 
 interface Response {
   ok: boolean;
@@ -14,56 +15,55 @@ interface Response {
   msg: string;
 }
 interface RespFixture {
-  fixture: FixtureState;
-  grupo: string | null;
-  user: string;
-  fecha: {
+  fixture: Fixture | any;
+  fecha?: {
     dia: string;
     mes: string;
   }
 }
+interface Fixture {
+  id: number;
+  title: string;
+  groups: Group[];
+}
 
 const FixturePage: NextPage = () => {
 
-  const [fixtureState, setFixtureState] = useState<RespFixture>();
-  const { isAuthenticated } = useContext(AuthContext);
-  const {asPath} = useRouter();
- 
+  const [fixtureState, setFixtureState] = useState<Fixture[]>();
+  const { query } = useRouter();
+
   useEffect(() => {
-
-    const fixtureId = asPath.split('/');
-    getFixture(fixtureId[2]);
-    if (isAuthenticated) {
-
+    if (query.id) {
+      getFixture(query.id?.toString());
     }
-  }, []);
+  }, [query]);
 
-  const getFixture = async (id:string) => {
+  const getFixture = async (id: string = '') => {
     const resp: Response = await getFixtureByUid(id);
 
-    if (!resp.ok) {
-      console.log(resp.msg);
-      return;
+    if (resp.ok) {
+      const fixtureReps = ordernarArray(Object.values(resp.data.fixture), 'id');
+      setFixtureState(fixtureReps);
+
+    } else {
+      return Swal.fire({
+        icon: 'error',
+        title: resp.msg,
+      });
     }
-    setFixtureState(resp.data);
   }
 
   return (
     <Layout>
       {
         (fixtureState) ?
-        <FixtureCards
-          groups={fixtureState.fixture.fasegrupos.groups}
-          octavos={fixtureState.fixture.octavos.groups}
-          cuartos={fixtureState.fixture.cuartos.groups}
-          semifinal={fixtureState.fixture.semifinal.groups}
-          final={fixtureState.fixture.final.groups}
-          tercerpuesto={fixtureState.fixture.tercerpuesto.groups}
-        />
-        :
-        <div className='spinner'>
-          <Spinner/>
-        </div>
+          <FixtureCards
+            fases={fixtureState}
+          />
+          :
+          <div className='spinner'>
+            <Spinner />
+          </div>
       }
     </Layout>
   )

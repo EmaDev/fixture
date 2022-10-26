@@ -1,4 +1,4 @@
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, setDoc, addDoc, collection, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { FixtureState } from "../context/creatorReducer";
 import { app } from './config';
 const db = getFirestore(app);
@@ -8,7 +8,7 @@ interface Response {
     msg: string;
 }
 
-export const createUserFixture = async (fixture: FixtureState, uid: string, groupId?: string) => {
+export const createUserFixture = async (fixture: FixtureState, uid: string, groupId: string = '') => {
 
     const docRef = doc(db, "fixtures", `fixture-user=${uid}`);
     const docSnap = await getDoc(docRef);
@@ -30,14 +30,18 @@ export const createUserFixture = async (fixture: FixtureState, uid: string, grou
                 mes: ''
             }
         }
-
         await setDoc(doc(db, "fixtures", `fixture-user=${uid}`), data);
+
+        if(groupId !== ''){
+            await addUserOnGroup(groupId, `fixture-user=${uid}`, uid );
+        }
 
         return {
             ok: true,
             msg: 'Fixture creado correctamente'
         }
-    } catch (error:any) {
+        
+    } catch (error: any) {
         console.log(error.message);
         return {
             ok: false,
@@ -45,4 +49,57 @@ export const createUserFixture = async (fixture: FixtureState, uid: string, grou
         }
     }
 
+}
+
+const addUserOnGroup = async (groupId: string, fixtureId: string, uid:string) => {
+
+    const docRef = doc(db, "groups", groupId);
+
+    await updateDoc(docRef, {
+        users: arrayUnion({ fixtureId, uid })
+    });
+}
+
+const removeUserOnGroup = async (groupId: string, fixtureId: string, uid: string) => {
+    
+    const docRef = doc(db, "groups", groupId);
+
+    await updateDoc(docRef, {
+        users: arrayRemove({ fixtureId, uid })
+    });
+}
+
+export const verifyIfGroupExist = async(groupId: string) => {
+    const docRef = doc(db, "groups", groupId);
+    const docSnap = await getDoc(docRef);
+    if(docSnap.exists() ){
+        return {
+            ok:true
+        }
+    }
+    return {
+        ok:false
+    }
+}
+
+export const createProdeGroup = async (uid: string, groupName: string, description: string) => {
+    try {
+        const docRef = await addDoc(collection(db, "groups"), {
+            creator: uid,
+            name: groupName,
+            description,
+            users: []
+        });
+
+        return {
+            ok: true,
+            groupId: docRef.id
+        }
+
+    } catch (error: any) {
+        return {
+            ok: false,
+            msg: error.message
+        }
+    }
 }

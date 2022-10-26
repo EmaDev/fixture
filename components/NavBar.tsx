@@ -54,7 +54,7 @@ export const NavBar = ({ menuRef }: Props) => {
             <ActionButton pos={'left: 1rem'}>
                 <HiMenu onClick={handleOpenMenu} />
             </ActionButton>
-            <Link href={'/'}>
+            <Link href={(isAuthenticated) ? '/home': '/'}>
                 <LogoButton>
                     <Image src={require('../assets/icon-nav.svg')} />
                 </LogoButton>
