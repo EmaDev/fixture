@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 
 const Container = styled.section`
@@ -60,21 +60,52 @@ const SvgContainer = styled.div`
    justify-content: space-between;
    margin: 1rem auto;
 `;
+
+interface TimerProps {
+  dias: string;
+  horas: string;
+  minutos: string;
+  segundos?:string;
+}
+
 export const Counter = () => {
+
+  const [timerState, setTimerState] = useState<TimerProps>({dias: '', horas: '', minutos: ''});
+  
+  useEffect( () => {
+    let iteracion = 1000;
+    const intervalo = setInterval( () => {
+      setTimer("Nov 20 2022 13:00:00 GMT-0300");
+      if(iteracion === 1000){
+        iteracion = 60000;
+      }
+    }, iteracion);
+  },[]);
+
+  const setTimer = (fecha: string) => {
+    const hoy:any = new Date();
+    const fechaFin:any = new Date(fecha); 
+    const diferencia = (fechaFin - hoy + 1000) / 1000; 
+    setTimerState({
+      segundos:("0" + Math.floor(diferencia % 60)).slice(-2),
+      minutos:("0" + Math.floor(diferencia / 60 % 60)).slice(-2),
+      horas:  ("0" + Math.floor(diferencia / 3600 % 24)).slice(-2),
+      dias: Math.floor(diferencia / (3600 * 24)).toString(),
+    })
+  }
   return (
     <Container>
       <Title>El torneo comienza en</Title>
       <CounterContainer>
         <CounterItem>
-          <p>72</p><span>Dias</span>
+          <p>{timerState.dias}</p><span>Dias</span>
         </CounterItem>
         <CounterItem>
-          <p>21</p><span>horas</span>
+          <p>{timerState.horas}</p><span>horas</span>
         </CounterItem>
         <CounterItem>
-          <p>32</p><span>minutos</span>
+          <p>{timerState.minutos}</p><span>minutos</span>
         </CounterItem>
-
       </CounterContainer>
 
       <SvgContainer>

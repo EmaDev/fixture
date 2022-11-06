@@ -129,3 +129,21 @@ const getUserByUid = async(uid:string) => {
         }
     }
 }
+
+
+export const getGruposCreadosPorUnUsaurio = async(uid: string) => {
+    try {
+        const q = query(collection(db, "groups"),where("creator", "==", uid));
+        const querySnapshot = await getDocs(q);
+        const grupos:any = [];
+        querySnapshot.forEach( doc => {
+            grupos.push({
+                nombre: doc.data().name,
+                id: doc.id
+            })
+        });
+        return grupos;
+    } catch (e:any) {
+        console.log(e.message);
+    }
+}

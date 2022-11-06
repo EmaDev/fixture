@@ -34,7 +34,7 @@ const Card = styled.div`
    padding-top: 2rem;
    background-color: #e1e1e1;
    margin: auto .5rem;
-   border-radius: 30px;
+   border-radius: 15px;
    display: flex;
    flex-direction:column;
    justify-content:center;
@@ -86,8 +86,8 @@ export const Participar = () => {
           <h4>Crea tu fixture</h4>
         </Card>
         <Card>
-          <div><Image src={require('../../assets/paymentcard.png')} /></div>
-          <h4>Pago la inscripcion</h4>
+          <div><Image src={require('../../assets/networking.png')} /></div>
+          <h4>Unite a un grupo</h4>
         </Card>
       </CardSlider>
       <Link href={'/login'}>

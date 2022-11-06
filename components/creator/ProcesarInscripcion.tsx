@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useContext, useRef, useState } from 'react';
-import { GiConsoleController } from 'react-icons/gi';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 import { AuthContext } from '../../context/authContext';
 import { CreatorContext } from '../../context/CreatorContext';
 import { createUserFixture, verifyIfGroupExist } from '../../firebase/fixtureCreatorQueries';
+import { getGruposCreadosPorUnUsaurio } from '../../firebase/fixtureQueries';
 import { Spinner } from '../Spinner';
 
 const Container = styled.div`
@@ -102,12 +102,30 @@ const Seperator = styled.p`
    }
 `;
 
+const Select = styled.select`
+width: 100%;
+margin:auto;
+padding: 1rem;
+border-style: none;
+border: 1px solid grey;
+border-radius: 4px;
+color: #000;
+margin: 1rem 0;
+box-shadow: 1px 1px 8px #989898;
+option{
+    border-radius: 6px;
+    width: 100%;
+}
+`;
+
 export const ProcesarInscripcion = () => {
 
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const { fixtureState } = useContext(CreatorContext);
     const { user } = useContext(AuthContext);
+    const { fixtureState } = useContext(CreatorContext);
     const { push } = useRouter();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [misGruposState, setMisGruposState] = useState<any[]>([]);
+    
     const inputValue: any = useRef(null);
 
     useEffect(() => {
@@ -120,10 +138,17 @@ export const ProcesarInscripcion = () => {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
+        const groupId = inputValue.current.value;
+        
+        if(!groupId){
+            return Swal.fire({
+                title: 'Ingresa un codigo'
+            })
+        }
         setIsLoading(true);
 
         if (user?.uid) {
-            const groupId = inputValue.current.value;
+            
             const resp = await verifyIfGroupExist(groupId);
 
             if (!resp.ok) {
@@ -152,6 +177,14 @@ export const ProcesarInscripcion = () => {
         })
     }
 
+    const getMisGrupos = async() => {
+        if(user?.uid){
+            const resp = await getGruposCreadosPorUnUsaurio(user.uid);
+            setMisGruposState(resp);
+        }
+    }
+
+    getMisGrupos();
     return (
         <Container>
             <Title>Unite a un grupo</Title>
@@ -160,6 +193,13 @@ export const ProcesarInscripcion = () => {
                 <Input placeholder='Ingresa el codigo'
                     ref={inputValue}
                 />
+                {(misGruposState.length > 0) && 
+                <Select>
+                    {misGruposState.map( grupo => (
+                        <option key={grupo.id}>{grupo.nombre}</option>
+                    ))}
+                </Select>
+                }
                 {(isLoading) ?
                     <div style={{ margin: '1rem auto', display: 'flex', justifyContent: 'center' }}><Spinner /></div>
                     :

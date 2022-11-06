@@ -6,29 +6,31 @@ import { Avatar, Button, Coin, HeaderHello, HelloText, RankingContainer, Title, 
 import { ButtonLink, ButtonsContainer, CardImage, CardText, Container, FixtureCard } from '../components/Home.module';
 import { Layout } from '../components/Layout';
 import { AuthContext } from '../context/authContext';
-import Link from 'next/link';
 import { firstLetterToCapitalize } from '../helpers';
-import { Spinner } from '../components/Spinner';
 import { getRankingByGroup } from '../firebase/fixtureQueries';
 import { RankingCard, RankingItem } from '../components/others/RankingCard';
 import Swal from 'sweetalert2';
-import { getAllFixtures, setUserScore } from '../firebase/scoreQueries';
+import { Spinner } from '../components/Spinner';
 
 const HomePage: NextPage = () => {
 
     const { user, userFixture } = useContext(AuthContext);
     const { push } = useRouter();
     const [rankingState, setRankigState] = useState<RankingItem[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
         getRankingUsers();
     }, []);
+
     const getRankingUsers = async () => {
         if (userFixture?.grupo) {
+            setIsLoading(true);
             const resp = await getRankingByGroup(userFixture.grupo, 8);
+            setRankigState(resp.data);
             setTimeout(() => {
-                setRankigState(resp.data);
-            }, 500);
+                setIsLoading(false);
+            }, 1000);
         }
     }
 
@@ -38,7 +40,6 @@ const HomePage: NextPage = () => {
             title: 'Esta funcion todavia no se encuentra disponible'
         })
     }
-
     const goToFixture = () => {
         if (userFixture && user?.uid) {
             return push(`/fixture/${user.uid}`);
@@ -46,27 +47,16 @@ const HomePage: NextPage = () => {
         push(`usuario/fixture`);
     }
 
-    const handleBackend = async() => {
-        const id = 'fixture-user=4oDuWidij2PV52Q1Lu8zKyqjjtp1';
-        const puntos = 500;
-        const match = {
-            faseId: 'fasegrupos',
-            groupId: '1',
-            matchId: 'grupos-grupo1-partido1'
+    const alertaSinGrupo = () => {
+        if(!userFixture?.grupo){
+            return Swal.fire({
+                title: 'No podes ver el ranking sin haber creado tu fixture'
+            })
         }
-
-        const result = {
-            local: 4,
-            visitor: 3,
-        }
-        
-       // await setUserScore(id, puntos, match);
-       await getAllFixtures(match, result);
     }
 
     return (
         <Layout>
-            <Button onClick={handleBackend}>Actualizar puntaje</Button>
             <HeaderHello>
                 {user &&
                     <>
@@ -90,7 +80,7 @@ const HomePage: NextPage = () => {
                     </Coin>
                     <CardText>
                         <h2>Tu Fixture</h2>
-                        {user && <h3>Puntos: {user.score.total}</h3>}
+                        {user && <h3>Puntos: {userFixture?.puntos}</h3>}
                     </CardText>
                 </FixtureCard>
 
@@ -107,24 +97,29 @@ const HomePage: NextPage = () => {
                         <Image src={require('../assets/trophy.png')} />
                     </ButtonLink>
                 </ButtonsContainer>
-
                 <Title>Ranking
-                    <span onClick={getRankingUsers}>{rankingState.length > 0 ? 'actualizar' : 'mostrar'}</span>
+                    <span onClick={() => {getRankingUsers();alertaSinGrupo()}}>{rankingState.length > 0 ? 'actualizar' : 'mostrar'}</span>
                 </Title>
                 <RankingContainer>
-                    {(rankingState.length > 0) &&
+                    {(isLoading) ? <div style={{margin: 'auto', width: '100px'}}><Spinner/></div>
+                        :
                         <>
-                            {
-                                rankingState.map(rank => (
-                                    <RankingCard
-                                        key={rank.fixtureId}
-                                        userData={rank.userData}
-                                    />
-                                ))
+                            {(rankingState.length > 0) &&
+                                <>
+                                    {
+                                        rankingState.map(rank => (
+                                            <RankingCard
+                                                key={rank.fixtureId}
+                                                userData={rank.userData}
+                                            />
+                                        ))
+                                    }
+                                    <Button block onClick={() => push('/fixture/ranking')}>ver mas</Button>
+                                </>
                             }
-                            <Button block onClick={() => push('/fixture/ranking')}>ver mas</Button>
                         </>
                     }
+
                 </RankingContainer>
 
             </Container>

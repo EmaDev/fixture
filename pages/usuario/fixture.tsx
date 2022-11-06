@@ -84,6 +84,8 @@ const FixturePage: NextPage = () => {
                 }).then((result) => {
                     if (result.isConfirmed) {
                         return push(`/crear`);
+                    }else{
+                        return push('/home');
                     }
                 })
             }

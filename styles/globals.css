@@ -5,6 +5,7 @@ html{
   padding: 0;
   scroll-behavior: smooth;
   background-color: #630f2c;
+  max-width: 600px;
 }
 *, *:before, *:after {
   box-sizing: inherit;

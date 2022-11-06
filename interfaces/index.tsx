@@ -8,7 +8,7 @@ export interface FaseInterface {
 
 export interface Group {
     id: string;
-    title:string;
+    title: string;
     matches: Match[];
 }
 export interface Match {
@@ -20,15 +20,15 @@ export interface LocalVisitor {
     name: Countries;
     goals: number;
 }
-export type Countries = 
-| 'qatar' | 'holanda'| 'senegal'|'ecuador'
-| 'inglaterra'|'iran'|'usa'|'gales'
-| 'argentina'|'arabia'|'mexico'|'polonia'
-| 'francia'|'dinamarca'|'tunez'|'australia'
-| 'espana'|'alemania'|'japon'|'costa rica'
-|'belgica'| 'canada'|'marruecos'|'croacia'
-| 'brasil'|'serbia'|'suiza'|'camerun'
-| 'portugal'|'ghana'|'uruguay'|'corea';
+export type Countries =
+    | 'qatar' | 'holanda' | 'senegal' | 'ecuador'
+    | 'inglaterra' | 'iran' | 'usa' | 'gales'
+    | 'argentina' | 'arabia' | 'mexico' | 'polonia'
+    | 'francia' | 'dinamarca' | 'tunez' | 'australia'
+    | 'espana' | 'alemania' | 'japon' | 'costa rica'
+    | 'belgica' | 'canada' | 'marruecos' | 'croacia'
+    | 'brasil' | 'serbia' | 'suiza' | 'camerun'
+    | 'portugal' | 'ghana' | 'uruguay' | 'corea';
 
 
 export interface FixtureData {
@@ -36,6 +36,15 @@ export interface FixtureData {
     fecha: {
         dia: string; mes: string;
     };
-    user:string;
+    user: string;
+    puntos: number;
+    historial: {
+        fecha: Date;
+        match: {
+            faseId:string;
+            groupId:string;
+            matchId:string;
+        }
+    }
     fixture: FixtureState;
 } 

@@ -35,6 +35,10 @@ const CardSlider = styled.div`
   padding: 1rem 0;
   overflow-x: auto;
 `;
+const Link = styled.a`
+  color: #e1e1e1;
+  text-decoration: none;
+`;
 
 export const AboutQatar = () => {
     return (
@@ -44,19 +48,11 @@ export const AboutQatar = () => {
                 <br/>
                 <SubTitle>Documentos Oficiales</SubTitle>
                 <CardSlider>
-                    <CardSmall title="Calendario de partidos" img="/docs/calendar.avif"/>
+                    <Link href='https://digitalhub.fifa.com/m/6a616c6cf19bc57a/original/FWC-2022-Match-Schedule.pdf' 
+                    download><CardSmall title="Calendario de partidos" img="/docs/calendar.avif"/></Link>
                     <CardSmall title="Reglamento" img="/docs/regulations.avif"/>
                     <CardSmall title="Procedimiento del sorteo final" img="/docs/sort.avif"/>
-                </CardSlider>
-                <br/>
-                <SubTitle>Descubre Qatar</SubTitle>
-                <CardSlider>
-                    <Card title="Pais Anfitrion" img={"/docs/anfitrion.avif"}/>
-                    <Card title="Cinco cosas imperdibles de Qatar" img={"/docs/interes.avif"}/>
-                    <Card title="Doha" img={"/docs/doha.avif"}/>
-                    <Card title="Al Wakrah" img={"/docs/alwakrah.avif"}/>
-                    <Card title="Al Khor" img={"/docs/alkhor.avif"}/>
-                </CardSlider>
+                </CardSlider>               
 
                 <br/>
                 <SubTitle>Estadios</SubTitle>
