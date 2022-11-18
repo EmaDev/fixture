@@ -43,7 +43,7 @@ const Email = styled.div`
 `;
 const PerfilPage: NextPage = () => {
 
-    const {isAuthenticated} = useContext(AuthContext);
+    const {isAuthenticated, user} = useContext(AuthContext);
     const {push} = useRouter();
 
    useEffect( () => {
@@ -55,8 +55,8 @@ const PerfilPage: NextPage = () => {
             <ImageContainer>
                 <UpdateIcon><MdEdit color='#e1e1e1' size={'2rem'} /></UpdateIcon>
             </ImageContainer>
-            <UserName>Emanuel cisterna</UserName>
-            <Email>emanueldeveloper@gmail.com</Email>
+            <UserName>{user?.name}</UserName>
+            <Email>{user?.email}</Email>
         </Layout>
     )
 }

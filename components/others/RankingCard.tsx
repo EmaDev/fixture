@@ -56,7 +56,10 @@ export interface RankingItem {
     user: string;
     name:string;
     photoURL:string;
-    score: {};
+    score: {
+      history: [],
+      total: number
+    };
   }
 }
 export const RankingCard = ({userData}:RankingItem) => {
@@ -73,7 +76,7 @@ export const RankingCard = ({userData}:RankingItem) => {
             </NameAndPhoto>
             <Points>
                 <AiFillStar size={'1.8rem'} color={'#ae8348'} />
-                <p>{1500/*score*/}</p>
+                <p>{userData.score.total}</p>
             </Points>
         </Card>
     )

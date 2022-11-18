@@ -80,11 +80,9 @@ const HomePage: NextPage = () => {
                     </Coin>
                     <CardText>
                         <h2>Tu Fixture</h2>
-                        {user && <h3>Puntos: {userFixture?.puntos}</h3>}
+                        {/*user && <h3>Puntos: {}</h3>*/}
                     </CardText>
                 </FixtureCard>
-
-
 
                 <ButtonsContainer>
                     <ButtonLink onClick={funcionNoDisponible}>
