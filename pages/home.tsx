@@ -14,12 +14,13 @@ import { Spinner } from '../components/Spinner';
 
 const HomePage: NextPage = () => {
 
-    const { user, userFixture } = useContext(AuthContext);
+    const { user, userFixture, getUserFixturePost } = useContext(AuthContext);
     const { push } = useRouter();
     const [rankingState, setRankigState] = useState<RankingItem[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
+        getUserFixturePost();
         getRankingUsers();
     }, []);
 

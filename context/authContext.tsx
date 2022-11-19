@@ -9,9 +9,10 @@ interface AuthContextProps {
   isAuthenticated: boolean;
   user: UserData | null;
   userFixture: FixtureData | undefined;
+  getUserFixturePost: () => void;
   logIn: (uid: string) => void;
   logOut: () => void;
-  setUserData: (uid?:string) => void;
+  setUserData: (uid?: string) => void;
 }
 
 export interface UserData {
@@ -38,7 +39,7 @@ export const AuthContextProvider = ({ children }: any) => {
 
   useEffect(() => {
     checkIfLogged();
-  },[]);
+  }, []);
 
   const checkIfLogged = async () => {
     await detectarCambiosEnLaSesion(logIn);
@@ -50,9 +51,9 @@ export const AuthContextProvider = ({ children }: any) => {
     SignOut();
   }
 
-  const logIn = async(uid: string) => {
-    const {ok, data} = await getUserData(uid);
-    if(ok){
+  const logIn = async (uid: string) => {
+    const { ok, data } = await getUserData(uid);
+    if (ok) {
       setAuth(true);
       setUser({
         uid,
@@ -66,7 +67,7 @@ export const AuthContextProvider = ({ children }: any) => {
     }
   }
 
-  const setUserData = async (uid?:string) => {
+  const setUserData = async (uid?: string) => {
     if (!user) return;
 
     const resp = await getUserData(uid ? uid : user.uid);
@@ -78,10 +79,19 @@ export const AuthContextProvider = ({ children }: any) => {
     }
   }
 
-  const getUserFixture = async(uid:string) => {
-    const {ok, data} = await getFixtureByUid(uid);
-    if(ok){
+  const getUserFixture = async (uid: string) => {
+    const { ok, data } = await getFixtureByUid(uid);
+    if (ok) {
       setUserFixture(data);
+    }
+  }
+
+  const getUserFixturePost = async () => {
+    if (user?.uid) {
+      const { ok, data } = await getFixtureByUid(user.uid);
+      if (ok) {
+        setUserFixture(data);
+      }
     }
   }
 
@@ -91,6 +101,7 @@ export const AuthContextProvider = ({ children }: any) => {
       isAuthenticated: auth,
       user,
       userFixture,
+      getUserFixturePost,
       logOut,
       logIn,
       setUserData

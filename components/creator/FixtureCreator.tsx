@@ -9,7 +9,6 @@ import { CreateFinal } from './CreateFinal';
 import { CreateOctavos } from './CreateOctavos';
 import { CreateSemis } from './CreateSemis';
 import { CreateTercerPuesto } from './CreateTercerPuesto';
-import { Payment } from './Payment';
 import { ProcesarInscripcion } from './ProcesarInscripcion';
 
 interface FaseStep {

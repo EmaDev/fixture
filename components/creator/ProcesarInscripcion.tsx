@@ -122,7 +122,7 @@ export const ProcesarInscripcion = () => {
 
     const { user } = useContext(AuthContext);
     const { fixtureState } = useContext(CreatorContext);
-    const { push } = useRouter();
+    const { push, reload } = useRouter();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [misGruposState, setMisGruposState] = useState<any[]>([]);
     
@@ -161,7 +161,7 @@ export const ProcesarInscripcion = () => {
             } else {
                 const { ok, msg } = await createUserFixture(fixtureState, user.uid, inputValue.current.value);
                 if (ok) {
-                    return push('/home');
+                    return push('/home/?creado=ok');
                 }
             }
 
@@ -193,13 +193,6 @@ export const ProcesarInscripcion = () => {
                 <Input placeholder='Ingresa el codigo'
                     ref={inputValue}
                 />
-                {(misGruposState.length > 0) && 
-                <Select>
-                    {misGruposState.map( grupo => (
-                        <option key={grupo.id}>{grupo.nombre}</option>
-                    ))}
-                </Select>
-                }
                 {(isLoading) ?
                     <div style={{ margin: '1rem auto', display: 'flex', justifyContent: 'center' }}><Spinner /></div>
                     :

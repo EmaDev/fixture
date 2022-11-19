@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 import { FaQuestionCircle } from 'react-icons/fa';
@@ -34,6 +34,7 @@ const FixturePage: NextPage = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [formActive, setFormActive] = useState(false);
     const { push } = useRouter();
+    const grupoRef:any = useRef(null);
 
     useEffect(() => {
         getFixtureByDb();
@@ -69,7 +70,7 @@ const FixturePage: NextPage = () => {
         e.preventDefault();
         e.target.disabled = true;
         if (user?.uid) {
-            const { ok, groupId } = await createNewGroup(user.uid, 'Torneo Pura Gambeta', '');
+            const { ok, groupId } = await createNewGroup(user.uid, grupoRef.current.value, '');
             if (ok) {
                 e.target.disabled = false;
                 return Swal.fire({
@@ -129,7 +130,7 @@ const FixturePage: NextPage = () => {
                                     <h2>Nuevo Grupo</h2>
                                     <Input>
                                         <label>Nombre</label><span>*obligatorio</span>
-                                        <input type={'text'} placeholder='opcional' />
+                                        <input ref={grupoRef} type={'text'} placeholder='opcional' />
                                     </Input>
                                     <Input>
                                         <label>Descripcion</label><span>*opcional</span>

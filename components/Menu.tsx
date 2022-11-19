@@ -120,7 +120,6 @@ export const Menu = () => {
                         <Ul>
                             <li><AiFillHome /><p><Link href={'/home'}>Inicio</Link></p></li>
                             <li><FaUserAlt /><p><Link href={'/usuario/perfil'}>cuenta</Link></p></li>
-                            <li><GiTrophyCup /><p><Link href={'/fixture/ranking'}>Ranking</Link></p></li>
                             <li><FaGamepad /><p><Link href={'/juegos/trivia'}>Trivias</Link></p></li>
                             <li><FaPhoneAlt /><p><Link href={''}>contacto</Link></p></li>
                         </Ul>
@@ -132,7 +131,6 @@ export const Menu = () => {
                         <Ul>
                             <li><AiFillHome /><p><Link href={'/'}>Inicio</Link></p></li>
                             <li><FaUserAlt /><p><Link href={'/login'}>Ingresar</Link></p></li>
-                            <li><GiTrophyCup /><p><Link href={'/fixture/ranking'}>Ranking</Link></p></li>
                             <li><FaGamepad /><p><Link href={'/juegos/trivia'}>Juegos</Link></p></li>
                             <li><FaPhoneAlt /><p><Link href={''}>contacto</Link></p></li>
                             <li><AiFillQuestionCircle /><p style={{ fontSize: '1.6rem' }}><Link href={''}>Preguntas frecuentes</Link></p></li>
