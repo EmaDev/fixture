@@ -11,6 +11,7 @@ import { getRankingByGroup } from '../firebase/fixtureQueries';
 import { RankingCard, RankingItem } from '../components/others/RankingCard';
 import Swal from 'sweetalert2';
 import { Spinner } from '../components/Spinner';
+import { ComputarPuntosAlert } from '../components/ComputarPuntosAlert';
 
 const HomePage: NextPage = () => {
 
@@ -96,6 +97,7 @@ const HomePage: NextPage = () => {
                         <Image src={require('../assets/trophy.png')} />
                     </ButtonLink>
                 </ButtonsContainer>
+                <ComputarPuntosAlert/>
                 <Title>Ranking
                     <span onClick={() => {getRankingUsers();alertaSinGrupo()}}>{rankingState.length > 0 ? 'actualizar' : 'mostrar'}</span>
                 </Title>
