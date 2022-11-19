@@ -27,10 +27,22 @@ const TitleCard = styled.h1`
   text-align:center; 
   color: #e1e1e1;
 `;
-
+const PUsuario = styled.p`
+   margin: 1rem 2rem;
+   font-size: 1.8rem;
+   font-weight: 500;
+`;
 interface Props {
     fases: Fase[];
+    userData: DataUsuario;
 }
+interface DataUsuario {
+    name: string;
+    score: {
+      total: number;
+      history:[]
+    }
+  }
 interface Fase {
     id: number;
     title: string;
@@ -45,7 +57,7 @@ interface Match {
     local: any;
     visitor: any;
 }
-export const FixtureCards = ({ fases }: Props) => {
+export const FixtureCards = ({ fases, userData}: Props) => {
 
     const showCardComponent = (fase: Fase) => {
 
@@ -55,6 +67,8 @@ export const FixtureCards = ({ fases }: Props) => {
         return (
             <MyCards id={`${fase.id}${fase.title}`}>
                 <TitleCard>{fase.title}</TitleCard>
+                <PUsuario>{`Creador: ${userData.name}`}</PUsuario>
+                <PUsuario>{`Puntos: ${userData.score.total}`}</PUsuario>
                 <Swiper
                     effect={"cards"}
                     grabCursor={true}

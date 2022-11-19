@@ -1,4 +1,4 @@
-import { collection, query, where, getDocs, getFirestore, doc, updateDoc, arrayUnion } from "firebase/firestore";
+import { collection, query, where, getDocs, getFirestore, doc, updateDoc, arrayUnion, getDoc } from "firebase/firestore";
 import { FaseInterface } from "../interfaces";
 import { app } from './config';
 const db = getFirestore(app);
@@ -30,7 +30,7 @@ export const setScore = async (match: Match, matchResult: CorrectResult) => {
     let usuariosTotales = 0;
 
     const querySnapshot = await getDocs(q);
-    usuariosTotales =  querySnapshot.size;
+    usuariosTotales = querySnapshot.size;
     querySnapshot.forEach(async (doc) => {
         const fase: FaseInterface = doc.data().fixture[match.faseId];
         const groupSearched = fase.groups.find(group => group.id == match.groupId);
@@ -39,29 +39,38 @@ export const setScore = async (match: Match, matchResult: CorrectResult) => {
             if (matchSearched) {
                 let puntaje = 0;
                 const puntosMatch = {
-                    local: matchSearched.local.goals,
-                    visitor: matchSearched.visitor.goals
+                    local: (matchSearched.local.goals.toString() === '') ? 0 : parseInt(matchSearched.local.goals.toString()),
+                    visitor: (matchSearched.visitor.goals.toString() === '') ? 0 : parseInt(matchSearched.visitor.goals.toString())
                 }
 
-                if(puntosMatch.local == matchResult.local && puntosMatch.visitor == matchResult.visitor){
+                if (puntosMatch.local == matchResult.local && puntosMatch.visitor == matchResult.visitor) {
                     puntaje += puntajes.resultadoExacto;
-                }else if(puntosMatch.local == matchResult.local || puntosMatch.visitor == matchResult.visitor){
+                } else {
+                    if (puntosMatch.local == matchResult.local || puntosMatch.visitor == matchResult.visitor) {
                         puntaje += puntajes.golesDeUnEquipoCorrecto;
+                    }
+
+                    if (puntosMatch.local > puntosMatch.visitor && matchResult.local > matchResult.visitor) {
+                        puntaje += puntajes.resultadoCorrecto;
+                    } else if (puntosMatch.local < puntosMatch.visitor && matchResult.local < matchResult.visitor) {
+                        puntaje += puntajes.resultadoCorrecto;
+                    } else if (puntosMatch.local == puntosMatch.visitor && matchResult.local == matchResult.visitor) {
+                        puntaje += puntajes.resultadoCorrecto;
+                    }
                 }
 
-                if(puntosMatch.local > puntosMatch.visitor && matchResult.local > matchResult.visitor){
-                    puntaje += puntajes.resultadoCorrecto;
-                }else if(puntosMatch.local < puntosMatch.visitor && matchResult.local < matchResult.visitor){
-                    puntaje += puntajes.resultadoCorrecto;
-                }else if(puntosMatch.local == puntosMatch.visitor && matchResult.local == matchResult.visitor){
-                    puntaje += puntajes.resultadoCorrecto;
-                }
-
-                const {ok} = await setUserScore(doc.id, doc.data().puntos ,puntaje, match);
+                /*const {ok} = await setUserScore(doc.id, doc.data().puntos ,puntaje, match);
                 console.log(ok);
                 if(ok){
                     usuariosActualizados += 1;
-                }
+                }*/
+
+                console.log({
+                    parido: matchSearched,
+                    puntaje,
+                    usuario: doc.data().user,
+                    grupo: doc.data().grupo
+                })
             }
         }
     });

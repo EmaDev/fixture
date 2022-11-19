@@ -8,6 +8,7 @@ import { Spinner } from '../../components/Spinner';
 import Swal from 'sweetalert2';
 import { Group } from '../../interfaces';
 import { ordernarArray } from '../../helpers';
+import { getUserData } from '../../firebase/authQueries';
 
 interface Response {
   ok: boolean;
@@ -27,14 +28,24 @@ interface Fixture {
   groups: Group[];
 }
 
+interface DataUsuario {
+  name: string;
+  score: {
+    total: number;
+    history:[]
+  }
+}
+
 const FixturePage: NextPage = () => {
 
   const [fixtureState, setFixtureState] = useState<Fixture[]>();
+  const [userData, setUserData] = useState<DataUsuario>({name: '',score: {history:[], total: 0}}); 
   const { query } = useRouter();
 
   useEffect(() => {
     if (query.id) {
       getFixture(query.id?.toString());
+      getDatosDeUsuario(query.id?.toString());
     }
   }, [query]);
 
@@ -53,12 +64,20 @@ const FixturePage: NextPage = () => {
     }
   }
 
+  const getDatosDeUsuario = async(uid:string) => {
+   const resp =  await getUserData(uid);
+   if(resp.ok){
+    setUserData(resp.data);
+   }
+  }
+
   return (
     <Layout>
       {
         (fixtureState) ?
           <FixtureCards
             fases={fixtureState}
+            userData={userData}
           />
           :
           <div className='spinner'>

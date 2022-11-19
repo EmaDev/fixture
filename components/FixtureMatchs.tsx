@@ -17,6 +17,13 @@ export const FixtureMatchs = ({ matches }: Props) => {
 
     const orderedMatches = ordernarArray(matches, 'orden');
 
+    const textInput = (goles:number) => {
+        let txt = goles.toString();
+        if(goles.toString() === ''){
+            txt = '0';
+        }
+        return txt;
+    }
     return (
         <>
             {
@@ -25,21 +32,22 @@ export const FixtureMatchs = ({ matches }: Props) => {
                         <div>
                             <Image width={'25px'} height={'25px'}
                                 src={
-                                    (match.local.name.length > 12) ? 
-                                    require(`../assets/flags/no-flag.png`)
-                                    :
-                                    require(`../assets/flags/${match.local.name}.png`)
+                                    (match.local.name.length > 12) ?
+                                        require(`../assets/flags/no-flag.png`)
+                                        :
+                                        require(`../assets/flags/${match.local.name}.png`)
                                 } />
                             <p>{firstLetterToCapitalize(match.local.name)}</p>
                         </div>
-                        <input type={'number'} placeholder={match.local.goals} disabled /><input type={'number'} placeholder={match.visitor.goals} disabled />
+                        <input type={'number'} placeholder={textInput(match.local.goals)} disabled />
+                        <input type={'number'} placeholder={textInput(match.visitor.goals)} disabled />
                         <div>
                             <Image width={'25px'} height={'25px'}
                                 src={
-                                    (match.local.name.length > 12) ? 
-                                    require(`../assets/flags/no-flag.png`)
-                                    :
-                                    require(`../assets/flags/${match.visitor.name}.png`)
+                                    (match.local.name.length > 12) ?
+                                        require(`../assets/flags/no-flag.png`)
+                                        :
+                                        require(`../assets/flags/${match.visitor.name}.png`)
                                 } />
                             <p>{firstLetterToCapitalize(match.visitor.name)}</p>
                         </div>
