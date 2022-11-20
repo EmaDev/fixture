@@ -28,9 +28,12 @@ const HomePage: NextPage = () => {
     const getRankingUsers = async () => {
         if (userFixture?.grupo) {
             setIsLoading(true);
-            const resp = await getRankingByGroup(userFixture.grupo, 8);
-            setRankigState(resp.data);
+            const resp = await getRankingByGroup(userFixture.grupo, 5);
+
+            const arrCortado = resp.data; 
+            setRankigState(arrCortado);
             setTimeout(() => {
+                setRankigState( arrCortado.slice(0,5) );
                 setIsLoading(false);
             }, 1000);
         }

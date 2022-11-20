@@ -76,8 +76,7 @@ interface Resp {
 export const getRankingByGroup = async (group: string = '', limite: number = 1000) => {
 
     try {
-        //TODO: Order por mayor puntuacion
-        const q = query(collection(db, "fixtures"),limit(limite),where("grupo", "==", group));
+        const q = query(collection(db, "fixtures"),where("grupo", "==", group));
         const ranking: any = [];
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach(async(doc) => {
@@ -93,7 +92,11 @@ export const getRankingByGroup = async (group: string = '', limite: number = 100
                     }
                 })
             }
+            ranking.sort( (a:any, b:any) => {
+                return b.userData.score.total - a.userData.score.total
+            });
         });
+        
         return<Resp> {
             ok: true,
             data: ranking
