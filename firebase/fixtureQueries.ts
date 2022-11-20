@@ -1,4 +1,4 @@
-import { getFirestore, doc, getDoc, query, collection, getDocs, where, limit } from "firebase/firestore";
+import { getFirestore, doc, getDoc, query, collection, getDocs, where, limit, orderBy } from "firebase/firestore";
 import { RankingItem } from "../components/others/RankingCard";
 import { FixtureState } from "../context/creatorReducer";
 import { ordernarArray } from "../helpers";
@@ -76,7 +76,7 @@ interface Resp {
 export const getRankingByGroup = async (group: string = '', limite: number = 1000) => {
 
     try {
-        const q = query(collection(db, "fixtures"),where("grupo", "==", group));
+        const q = query(collection(db, "fixtures"),where("grupo", "==", group), orderBy("puntos", "desc"), limit(limite));
         const ranking: any = [];
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach(async(doc) => {
@@ -84,6 +84,7 @@ export const getRankingByGroup = async (group: string = '', limite: number = 100
             if(ok){
                 ranking.push({
                     fixtureId: doc.id,
+                    puntaje: doc.data().puntos,
                     userData: {
                         user: data.uid,
                         name: data.name,
@@ -92,11 +93,11 @@ export const getRankingByGroup = async (group: string = '', limite: number = 100
                     }
                 })
             }
-            ranking.sort( (a:any, b:any) => {
+            /*ranking.sort( (a:any, b:any) => {
                 return b.userData.score.total - a.userData.score.total
-            });
+            });*/
         });
-        
+        console.log(ranking);
         return<Resp> {
             ok: true,
             data: ranking

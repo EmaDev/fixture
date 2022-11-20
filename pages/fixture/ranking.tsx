@@ -63,6 +63,7 @@ const RankingPage: NextPage = () => {
             key={item.fixtureId}
             userData={item.userData}
             fixtureId={item.fixtureId}
+            puntaje={item.puntaje}
             />
           ))}
           </>

@@ -52,6 +52,7 @@ const Points = styled.div`
 
 export interface RankingItem {
   fixtureId?: string;
+  puntaje:number;
   userData: {
     user: string;
     name:string;
@@ -62,7 +63,7 @@ export interface RankingItem {
     };
   }
 }
-export const RankingCard = ({userData}:RankingItem) => {
+export const RankingCard = ({userData, puntaje}:RankingItem) => {
     const {push} = useRouter();
     return (
         <Card onClick={() => push(`/fixture/${userData.user}`)}>
@@ -76,7 +77,7 @@ export const RankingCard = ({userData}:RankingItem) => {
             </NameAndPhoto>
             <Points>
                 <AiFillStar size={'1.8rem'} color={'#ae8348'} />
-                <p>{userData.score.total}</p>
+                <p>{puntaje}</p>
             </Points>
         </Card>
     )

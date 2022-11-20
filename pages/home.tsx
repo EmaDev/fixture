@@ -114,6 +114,7 @@ const HomePage: NextPage = () => {
                                         rankingState.map(rank => (
                                             <RankingCard
                                                 key={rank.fixtureId}
+                                                puntaje={rank.puntaje}
                                                 userData={rank.userData}
                                             />
                                         ))

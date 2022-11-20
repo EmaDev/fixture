@@ -21,6 +21,7 @@ interface RespFixture {
     dia: string;
     mes: string;
   }
+  puntos: number;
 }
 interface Fixture {
   id: number;
@@ -39,6 +40,7 @@ interface DataUsuario {
 const FixturePage: NextPage = () => {
 
   const [fixtureState, setFixtureState] = useState<Fixture[]>();
+  const [puntosState, setPuntoState] = useState<number>(-1);
   const [userData, setUserData] = useState<DataUsuario>({name: '',score: {history:[], total: 0}}); 
   const { query } = useRouter();
 
@@ -51,8 +53,9 @@ const FixturePage: NextPage = () => {
 
   const getFixture = async (id: string = '') => {
     const resp: Response = await getFixtureByUid(id);
-
+    console.log(resp);
     if (resp.ok) {
+      setPuntoState(resp.data.puntos);
       const fixtureReps = ordernarArray(Object.values(resp.data.fixture), 'id');
       setFixtureState(fixtureReps);
 
@@ -78,6 +81,7 @@ const FixturePage: NextPage = () => {
           <FixtureCards
             fases={fixtureState}
             userData={userData}
+            puntaje={puntosState}
           />
           :
           <div className='spinner'>

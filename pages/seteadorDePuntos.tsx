@@ -15,12 +15,12 @@ interface CorrectResult {
 
 const dataPatido:Match = {
     faseId: 'fasegrupos',
-    groupId: '3',
-    matchId: 'grupos-grupo3-partido6'
+    groupId: '1',
+    matchId: 'grupos-grupo1-partido1'
 }
 const resultado:CorrectResult = {
-    local: 1,
-    visitor: 3
+    local: 0,
+    visitor: 2
 }
 
 const SeteadorDePuntos: NextPage = () => {

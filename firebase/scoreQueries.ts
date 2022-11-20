@@ -23,6 +23,12 @@ const puntajes = {
     golesDeUnEquipoCorrecto: 20,
 }
 
+
+const punjesClasicos = {
+    exacto: 3,
+    ganador: 1
+}
+
 export const setScore = async (match: Match, matchResult: CorrectResult) => {
 
     const q = query(collection(db, "fixtures"));
@@ -44,33 +50,37 @@ export const setScore = async (match: Match, matchResult: CorrectResult) => {
                 }
 
                 if (puntosMatch.local == matchResult.local && puntosMatch.visitor == matchResult.visitor) {
-                    puntaje += puntajes.resultadoExacto;
+                    //puntaje += puntajes.resultadoExacto;
+                    puntaje += punjesClasicos.exacto;
                 } else {
-                    if (puntosMatch.local == matchResult.local || puntosMatch.visitor == matchResult.visitor) {
+                    /*if (puntosMatch.local == matchResult.local || puntosMatch.visitor == matchResult.visitor) {
                         puntaje += puntajes.golesDeUnEquipoCorrecto;
-                    }
+                    }*/
 
                     if (puntosMatch.local > puntosMatch.visitor && matchResult.local > matchResult.visitor) {
-                        puntaje += puntajes.resultadoCorrecto;
+                        //puntaje += puntajes.resultadoCorrecto;
+                        puntaje += punjesClasicos.ganador;
                     } else if (puntosMatch.local < puntosMatch.visitor && matchResult.local < matchResult.visitor) {
-                        puntaje += puntajes.resultadoCorrecto;
+                        //puntaje += puntajes.resultadoCorrecto;
+                        puntaje += punjesClasicos.ganador;
                     } else if (puntosMatch.local == puntosMatch.visitor && matchResult.local == matchResult.visitor) {
-                        puntaje += puntajes.resultadoCorrecto;
+                        //puntaje += puntajes.resultadoCorrecto;
+                        puntaje += punjesClasicos.ganador;
                     }
                 }
-
-                /*const {ok} = await setUserScore(doc.id, doc.data().puntos ,puntaje, match);
-                console.log(ok);
-                if(ok){
-                    usuariosActualizados += 1;
-                }*/
 
                 console.log({
                     parido: matchSearched,
                     puntaje,
                     usuario: doc.data().user,
                     grupo: doc.data().grupo
-                })
+                });
+
+                const {ok} = await setUserScore(doc.id, doc.data().puntos,puntaje, match);
+                console.log(ok);
+                if(ok){
+                    usuariosActualizados += 1;
+                }
             }
         }
     });
@@ -91,7 +101,7 @@ export const setUserScore = async (fixtureId: string, prevScore: number, score: 
         const docRef = doc(db, "fixtures", fixtureId);
 
         await updateDoc(docRef, {
-            puntos: prevScore + score,
+            puntos:  prevScore + score,
             historial: arrayUnion(history)
         });
         return {

@@ -35,6 +35,7 @@ const PUsuario = styled.p`
 interface Props {
     fases: Fase[];
     userData: DataUsuario;
+    puntaje:number;
 }
 interface DataUsuario {
     name: string;
@@ -57,7 +58,7 @@ interface Match {
     local: any;
     visitor: any;
 }
-export const FixtureCards = ({ fases, userData}: Props) => {
+export const FixtureCards = ({ fases, userData, puntaje}: Props) => {
 
     const showCardComponent = (fase: Fase) => {
 
@@ -68,7 +69,7 @@ export const FixtureCards = ({ fases, userData}: Props) => {
             <MyCards id={`${fase.id}${fase.title}`}>
                 <TitleCard>{fase.title}</TitleCard>
                 <PUsuario>{`Creador: ${userData.name}`}</PUsuario>
-                <PUsuario>{`Puntos: ${userData.score.total}`}</PUsuario>
+                <PUsuario>{`Puntos: ${puntaje}`}</PUsuario>
                 <Swiper
                     effect={"cards"}
                     grabCursor={true}
