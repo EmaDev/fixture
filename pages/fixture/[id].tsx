@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { Group } from '../../interfaces';
 import { ordernarArray } from '../../helpers';
 import { getUserData } from '../../firebase/authQueries';
+import {allGroups} from '../../assets/countries/groups';
 
 interface Response {
   ok: boolean;
@@ -22,6 +23,19 @@ interface RespFixture {
     mes: string;
   }
   puntos: number;
+  historial: Historial[];
+}
+interface Historial {
+  fecha: any;
+  match: {
+    matchId: string;
+    groupId: string
+  };
+  real: {
+    local: number;
+    visitor: number;
+  },
+  puntos:number;
 }
 interface Fixture {
   id: number;
@@ -41,6 +55,7 @@ const FixturePage: NextPage = () => {
 
   const [fixtureState, setFixtureState] = useState<Fixture[]>();
   const [puntosState, setPuntoState] = useState<number>(-1);
+  const [historialState, setHistorialState] = useState<Historial[]>([]);
   const [userData, setUserData] = useState<DataUsuario>({name: '',score: {history:[], total: 0}}); 
   const { query } = useRouter();
 
@@ -58,7 +73,7 @@ const FixturePage: NextPage = () => {
       setPuntoState(resp.data.puntos);
       const fixtureReps = ordernarArray(Object.values(resp.data.fixture), 'id');
       setFixtureState(fixtureReps);
-
+      setHistorialState(resp.data.historial);
     } else {
       return Swal.fire({
         icon: 'error',
@@ -72,6 +87,24 @@ const FixturePage: NextPage = () => {
    if(resp.ok){
     setUserData(resp.data);
    }
+  }
+
+  const construirHistorial = () => {
+    const arrHistoria:any = [];
+
+    historialState.forEach(partidoActual => {
+      const grupoBuscado = allGroups.find( grupo => grupo.id === partidoActual.match.groupId);
+      const partidoBuscado = grupoBuscado?.matches.find( match => match.id === partidoActual.match.matchId);
+      arrHistoria.push({
+        fecha: partidoActual.fecha,
+        local: {nombre: partidoBuscado?.local.name, goles: partidoActual.real.local},
+        visitante: {nombre: partidoBuscado?.visitor.name, goles: partidoActual.real.visitor},
+        puntos: partidoActual.puntos
+      })
+
+    });
+   
+    console.log(arrHistoria);
   }
 
   return (
@@ -88,6 +121,7 @@ const FixturePage: NextPage = () => {
             <Spinner />
           </div>
       }
+      
     </Layout>
   )
 }

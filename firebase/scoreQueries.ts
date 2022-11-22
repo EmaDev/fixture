@@ -49,7 +49,7 @@ export const setScore = async (match: Match, matchResult: CorrectResult) => {
                     visitor: (matchSearched.visitor.goals.toString() === '') ? 0 : parseInt(matchSearched.visitor.goals.toString())
                 }
 
-                if (puntosMatch.local == matchResult.local && puntosMatch.visitor == matchResult.visitor) {
+                if (puntosMatch.local === matchResult.local && puntosMatch.visitor === matchResult.visitor) {
                     //puntaje += puntajes.resultadoExacto;
                     puntaje += punjesClasicos.exacto;
                 } else {
@@ -76,7 +76,7 @@ export const setScore = async (match: Match, matchResult: CorrectResult) => {
                     grupo: doc.data().grupo
                 });
 
-                const {ok} = await setUserScore(doc.id, doc.data().puntos,puntaje, match);
+                const {ok} = await setUserScore(doc.id, doc.data().puntos,puntaje, match, matchResult);
                 console.log(ok);
                 if(ok){
                     usuariosActualizados += 1;
@@ -91,12 +91,13 @@ export const setScore = async (match: Match, matchResult: CorrectResult) => {
     }
 }
 
-export const setUserScore = async (fixtureId: string, prevScore: number, score: number, match: Match) => {
+export const setUserScore = async (fixtureId: string, prevScore: number, score: number, match: Match, matchResult:CorrectResult) => {
     try {
         const history = {
             fecha: new Date,
             puntos: score,
-            match
+            match,
+            real: matchResult
         }
         const docRef = doc(db, "fixtures", fixtureId);
 

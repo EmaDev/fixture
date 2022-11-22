@@ -13,16 +13,6 @@ interface CorrectResult {
   visitor: number;
 }
 
-const dataPatido: Match = {
-  faseId: 'fasegrupos',
-  groupId: '2',
-  matchId: 'grupos-grupo2-partido2'
-}
-const resultado: CorrectResult = {
-  local: 1,
-  visitor: 1
-}
-
 const SeteadorDePuntos: NextPage = () => {
 
   const [formValues, setFormValues] = useState<Match>({faseId: 'fasegrupos', groupId: '',matchId: ''});
@@ -42,14 +32,15 @@ const SeteadorDePuntos: NextPage = () => {
     })
   }
 
-  const handleSetScore = async () => {
-    const resultados: CorrectResult = {
+  const handleSetScore = async (e:any) => {
+    e.preventDefault();
+    const resultadosInt: CorrectResult = {
       local: parseInt(resultadoForm.local),
       visitor: parseInt(resultadoForm.visitante)
     }
 
-    console.log(formValues, resultados)
-    const resp = await setScore(dataPatido, resultado);
+    console.log(formValues, resultadosInt)
+    const resp = await setScore(formValues, resultadosInt);
   }
   return (
    <div>
@@ -85,8 +76,8 @@ const SeteadorDePuntos: NextPage = () => {
        value={resultadoForm.visitante}
        onChange={handleSetResultadoForm}
       />
+       <button type='submit' onClick={handleSetScore}>Setear Puntos</button>
     </form>
-    <Button onClick={handleSetScore}>Setear Puntos</Button>
    </div>
  
   )
