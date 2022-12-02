@@ -64,6 +64,7 @@ const RankingPage: NextPage = () => {
             userData={item.userData}
             fixtureId={item.fixtureId}
             puntaje={item.puntaje}
+            cardRanking={true}
             />
           ))}
           </>

@@ -100,6 +100,19 @@ export const Title = styled.h2`
 
 export const RankingContainer = styled.div`
     margin: 2rem auto;
+    .cardItem:last-of-type{
+      --g-red: #d04b36;
+    --g-orange: #e36511;
+    --g-yellow: #ffba00;
+    --g-green: #00b180;
+    --g-blue: #147aab;
+    --g-indigo: #675997;
+     background-image: linear-gradient( var(--g-red) 0%, var(--g-red) 16.6666%, 
+     var(--g-orange) 16.6666%, var(--g-orange) 33.333%, var(--g-yellow) 33.333%, 
+     var(--g-yellow) 50%, var(--g-green) 50%, var(--g-green) 66.6666%, 
+     var(--g-blue) 66.6666%, var(--g-blue) 83.3333%, var(--g-indigo) 83.3333%, 
+     var(--g-indigo) 100% );  importan!
+    }
 `;
 export const RankingCard = styled.div`
    width: 90%;

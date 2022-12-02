@@ -20,6 +20,14 @@ const Card = styled.div`
    &:hover{
      background-color: #D8D8D8;
    }
+
+   &:last-of-type{
+    padding: 1.5rem;
+    p{
+      color: #1b000f;
+      font-weight: 700;
+    }
+   }
 `;
 
 const NameAndPhoto = styled.div`
@@ -62,11 +70,14 @@ export interface RankingItem {
       total: number
     };
   }
+  cardRanking?:boolean;
 }
-export const RankingCard = ({userData, puntaje}:RankingItem) => {
+export const RankingCard = ({userData, puntaje, cardRanking}:RankingItem) => {
     const {push} = useRouter();
     return (
-        <Card onClick={() => push(`/fixture/${userData.user}`)}>
+        <Card onClick={() => push(`/fixture/${userData.user}`)}
+        className={ cardRanking ? 'cardItem' : ''}
+        >
             <NameAndPhoto>
                 <div>
                     <Image src={(userData.photoURL) ? userData.photoURL : require('../../assets/user.png')}
